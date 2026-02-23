@@ -11,14 +11,19 @@ class AppTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.background,
       textTheme: TextTheme(
+        titleLarge: GoogleFonts.dmSans(
+          color: AppColors.primaryText,
+          fontSize: 19,
+          fontWeight: FontWeight.w700,
+        ),
         bodyLarge: GoogleFonts.dmSans(
           color: AppColors.primaryText,
-          fontSize: 18,
+          fontSize: 17,
           fontWeight: FontWeight.w700,
         ),
         bodyMedium: GoogleFonts.dmSans(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
           color: AppColors.secText,
         ),
 
@@ -27,7 +32,6 @@ class AppTheme {
           fontWeight: FontWeight.w400,
         ),
       ),
-      
     );
   }
 }
