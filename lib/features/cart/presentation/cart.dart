@@ -15,25 +15,79 @@ class Cart extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is CartLoaded) {
-          return ListView.builder(
-            itemCount: state.items.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: Image.asset("assets/bag.png"),
-                title: Text(
-                  state.items[index].name,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                subtitle: Text(
-                  "Quantity: ${state.items[index].quantity}",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                trailing: Text(
-                  state.items[index].total.toString(),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              );
-            },
+          return Stack(
+            children: [
+              ListView.builder(
+                padding: EdgeInsets.all(0),
+                itemCount: state.items.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.background,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 2,
+                            spreadRadius: -4,
+                            offset: Offset(0, 5),
+                            color: AppColors.boxShadowPink,
+                          ),
+                        ],
+                      ),
+
+                      child: Image.asset("assets/bag.png"),
+                    ),
+                    title: Text(
+                      state.items[index].name,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    subtitle: Text(
+                      "Quantity: ${state.items[index].quantity}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    trailing: Text(
+                      "₹ ${state.items[index].total.toString()}",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  );
+                },
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 10,
+
+                              spreadRadius: -2,
+                              offset: Offset(0, 0),
+                              color: AppColors.boxShadowPink,
+                            ),
+                          ],
+                          color: AppColors.background,
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                        ),
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Pay ₹ ${state.subtotal}",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           );
         }
 

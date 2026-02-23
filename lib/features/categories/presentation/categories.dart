@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/app_colors.dart';
 import 'package:think_and_wash/features/cart/presentation/bloc/cart_bloc.dart';
 
+import '../../../core/ads/banner_ad.dart';
+
 class CategoriesPage extends StatelessWidget {
   CategoriesPage({super.key});
   final List<Map<String, String>> cartItemPriceList = [
@@ -12,7 +14,14 @@ class CategoriesPage extends StatelessWidget {
     {"Jeans": "18"},
     {"Blazer": "40"},
     {"Hoody": "35"},
-    {"Caot-Wash": "40"},
+  ];
+  final List<String> productImg = [
+    "assets/shirt.png",
+    "assets/t-shirt.png",
+    "assets/formal_pant.png",
+    "assets/jeans.png",
+    "assets/coat_blazer.png",
+    "assets/hoodie.png",
   ];
 
   @override
@@ -36,13 +45,8 @@ class CategoriesPage extends StatelessWidget {
                   ),
                 ],
               ),
-              height: 200,
-              child: Center(
-                child: Text(
-                  "Watch add to earn rewards...",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
+              // height: 200,
+              child: Center(child: const GlobalBannerAd()),
             ),
           ),
         ),
@@ -76,16 +80,17 @@ class CategoriesPage extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
+                      color: AppColors.background,
                       boxShadow: [
                         BoxShadow(
-                          blurRadius: 13,
-                          spreadRadius: -10,
-                          offset: Offset(0, 0),
-                          color: AppColors.boxShadowblue,
+                          blurRadius: 2,
+                          spreadRadius: -4,
+                          offset: Offset(0, 5),
+                          color: AppColors.boxShadowPink,
                         ),
                       ],
                     ),
-                    child: Icon(Icons.book, color: AppColors.primary, size: 50),
+                    child: Image.asset(productImg[index]),
                   ),
                   Text(item, style: Theme.of(context).textTheme.bodyLarge),
                   BlocBuilder<CartBloc, CartState>(

@@ -37,6 +37,7 @@ dependencies:
   google_fonts: ^6.3.2
   flutter_bloc: ^9.1.1
   bloc: ^9.2.0
+  google_mobile_ads: ^6.0.0
 
 dev_dependencies:
   flutter_test:
