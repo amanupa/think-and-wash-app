@@ -7,6 +7,7 @@ final class CartInitial extends CartState {}
 
 class CartLoaded extends CartState {
   final List<CartItem> items;
+
   final double subtotal;
   final double tax;
   final double total;

@@ -8,4 +8,5 @@ class AppColors {
   static const Color primary = Color.fromARGB(255, 41, 87, 255);
   static const Color boxShadowblue = Color.fromARGB(255, 187, 212, 255);
   static const Color boxShadowPink = Color.fromARGB(255, 255, 202, 219);
+  static const Color button = Color.fromARGB(255, 43, 202, 255);
 }
