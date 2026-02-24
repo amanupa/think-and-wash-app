@@ -14,6 +14,9 @@ class CategoriesPage extends StatelessWidget {
     {"Jeans": "18"},
     {"Blazer": "40"},
     {"Hoody": "35"},
+    {"Shoe": "60"},
+    {"BedSheet": "50"},
+    {"Blanket": "150"},
   ];
   final List<String> productImg = [
     "assets/shirt.png",
@@ -22,6 +25,9 @@ class CategoriesPage extends StatelessWidget {
     "assets/jeans.png",
     "assets/coat_blazer.png",
     "assets/hoodie.png",
+    "assets/shoe.png",
+    "assets/bedsheet.webp",
+    "assets/bedsheet.webp",
   ];
 
   @override
@@ -79,6 +85,8 @@ class CategoriesPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: AppColors.background,
                       boxShadow: [
