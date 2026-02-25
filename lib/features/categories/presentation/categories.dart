@@ -62,7 +62,7 @@ class CategoriesPage extends StatelessWidget {
             var itemPrice = double.parse(
               cartItemPriceList[index].entries.first.value,
             );
-            print("item: $item and price: $itemPrice");
+
             return Container(
               height: 80,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -105,7 +105,6 @@ class CategoriesPage extends StatelessWidget {
                     builder: (context, state) {
                       int count = 0;
                       if (state is CartLoaded) {
-                        print("this is the cart items:${state.items}");
                         final existing =
                             state.items.where((e) => e.id == index).toList();
 
