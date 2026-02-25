@@ -8,113 +8,99 @@ class Cart extends StatelessWidget {
   const Cart({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<CartBloc, CartState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is CartLoaded) {
           return Stack(
             children: [
-              ListView.builder(
-                padding: EdgeInsets.all(0),
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.background,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 2,
-                            spreadRadius: -4,
-                            offset: Offset(0, 5),
-                            color: AppColors.boxShadowPink,
-                          ),
-                        ],
-                      ),
+              CustomScrollView(
+                key: const PageStorageKey("cart"),
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final item = state.items[index];
 
-                      child: Image.asset("assets/bag.png"),
-                    ),
-                    title: Text(
-                      state.items[index].name,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    subtitle: Text(
-                      "Quantity: ${state.items[index].quantity}",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    trailing: Text(
-                      "₹ ${state.items[index].total.toString()}",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  );
-                },
+                      return ListTile(
+                        leading: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                spreadRadius: -4,
+                                offset: Offset(0, 5),
+                                color: AppColors.boxShadowPink,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset("assets/bag.png"),
+                        ),
+                        title: Text(
+                          item.name,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        subtitle: Text(
+                          "Quantity: ${item.quantity}",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        trailing: Text(
+                          "₹ ${item.total}",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      );
+                    }, childCount: state.items.length),
+                  ),
+
+                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 10,
 
-                              spreadRadius: -2,
-                              offset: Offset(0, 0),
-                              color: AppColors.boxShadowPink,
-                            ),
-                          ],
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
+              Positioned(
+                bottom: 20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 10,
+                          spreadRadius: -2,
+                          color: AppColors.boxShadowPink,
                         ),
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Pay ₹ ${state.subtotal}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Pay ₹ ${state.subtotal}",
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
             ],
           );
         }
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 30,
-
-                    spreadRadius: 4,
-                    offset: Offset(200, 8),
-                    color: AppColors.boxShadowPink,
-                  ),
-                ],
-              ),
-              child: Image.asset("assets/emptyCart.png"),
-            ),
-            Text(
-              "Cart is empty, Add item to wash...",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+        /// empty state
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/emptyCart.png"),
+              const SizedBox(height: 10),
+              const Text("Cart is empty, Add item to wash..."),
+            ],
+          ),
         );
       },
     );

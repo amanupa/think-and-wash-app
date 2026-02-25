@@ -14,6 +14,9 @@ class CategoriesPage extends StatelessWidget {
     {"Jeans": "18"},
     {"Blazer": "40"},
     {"Hoody": "35"},
+    {"Shoe": "60"},
+    {"BedSheet": "50"},
+    {"Blanket": "150"},
   ];
   final List<String> productImg = [
     "assets/shirt.png",
@@ -22,6 +25,9 @@ class CategoriesPage extends StatelessWidget {
     "assets/jeans.png",
     "assets/coat_blazer.png",
     "assets/hoodie.png",
+    "assets/shoe.png",
+    "assets/bedsheet.webp",
+    "assets/bedsheet.webp",
   ];
 
   @override
@@ -56,7 +62,7 @@ class CategoriesPage extends StatelessWidget {
             var itemPrice = double.parse(
               cartItemPriceList[index].entries.first.value,
             );
-            print("item: $item and price: $itemPrice");
+
             return Container(
               height: 80,
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -79,6 +85,8 @@ class CategoriesPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
+                    height: 50,
+                    width: 50,
                     decoration: BoxDecoration(
                       color: AppColors.background,
                       boxShadow: [
@@ -97,7 +105,6 @@ class CategoriesPage extends StatelessWidget {
                     builder: (context, state) {
                       int count = 0;
                       if (state is CartLoaded) {
-                        print("this is the cart items:${state.items}");
                         final existing =
                             state.items.where((e) => e.id == index).toList();
 
