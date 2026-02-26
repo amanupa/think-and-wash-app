@@ -6,18 +6,21 @@ class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
   final List<String> leadingIcon = const [
+    "assets/profile.png",
     "assets/track-order.png",
     "assets/privacy-policy.png",
     "assets/help-support.webp",
     "assets/wathcandearn.png",
   ];
   final List<String> lable = const [
+    "Aman",
     "Track Order",
     "Privacy & Policy",
     "Customer Support",
     "Watch & Earn",
   ];
   final List<String> route = const [
+    AppRoutes.profile,
     AppRoutes.trackOrder,
     AppRoutes.privacyNpolicy,
     AppRoutes.helpNsupport,
@@ -32,7 +35,7 @@ class MyDrawer extends StatelessWidget {
       child: Stack(
         children: [
           ListView.builder(
-            itemCount: 4,
+            itemCount: lable.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.only(top: 20),

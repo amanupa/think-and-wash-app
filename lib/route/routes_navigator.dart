@@ -3,6 +3,7 @@ import 'package:think_and_wash/features/auth/presentation/screen/login.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
 import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
+import 'package:think_and_wash/features/profile/presentation/profile.dart';
 import 'package:think_and_wash/features/trackOrder/track_order.dart';
 import 'package:think_and_wash/features/watchEarn/watch_and_earn.dart';
 
@@ -45,6 +46,11 @@ class RoutesNavigator {
       case AppRoutes.trackOrder:
         return MaterialPageRoute(
           builder: (context) => TrackOrder(),
+          settings: settings,
+        );
+      case AppRoutes.profile:
+        return MaterialPageRoute(
+          builder: (context) => Profile(),
           settings: settings,
         );
       default:
