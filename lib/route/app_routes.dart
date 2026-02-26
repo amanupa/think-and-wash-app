@@ -9,4 +9,5 @@ class AppRoutes {
   static const String helpNsupport = "/hNs";
   static const String watchNearn = "/wNe";
   static const String privacyNpolicy = "/pNp";
+  static const String dryClean = "/dc";
 }

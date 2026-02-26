@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:think_and_wash/features/auth/presentation/screen/login.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/dry_clean.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
 import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
@@ -51,6 +52,11 @@ class RoutesNavigator {
       case AppRoutes.profile:
         return MaterialPageRoute(
           builder: (context) => Profile(),
+          settings: settings,
+        );
+      case AppRoutes.dryClean:
+        return MaterialPageRoute(
+          builder: (context) => DryClean(),
           settings: settings,
         );
       default:
