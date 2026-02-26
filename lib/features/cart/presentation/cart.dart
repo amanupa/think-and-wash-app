@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:think_and_wash/route/app_routes.dart';
 
 import '../../../core/app_colors.dart';
+import 'widgets/address_card.dart';
+import 'widgets/price_summary_card.dart';
 
 class Cart extends StatelessWidget {
-  const Cart({super.key});
+  Cart({super.key});
+
+  bool isSummaryOpen = false;
 
   @override
   @override
@@ -14,6 +19,11 @@ class Cart extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is CartLoaded) {
+          final subtotal = state.subtotal.toDouble();
+
+          final pickupCharge = subtotal < 100 ? 20.0 : 0.0;
+          final tax = subtotal * 0.12; // background calc
+          final total = subtotal + pickupCharge + tax;
           return Stack(
             children: [
               CustomScrollView(
@@ -54,7 +64,24 @@ class Cart extends StatelessWidget {
                     }, childCount: state.items.length),
                   ),
 
-                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
+
+                  //Address card
+                  AddressCard(),
+
+                  //summary card
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: PriceSummaryCard(
+                        subtotal: subtotal,
+                        pickupCharge: pickupCharge,
+                        tax: tax,
+                        total: total,
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(child: SizedBox(height: 80)),
                 ],
               ),
 
@@ -80,7 +107,7 @@ class Cart extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {},
                       child: Text(
-                        "Pay ₹ ${state.subtotal}",
+                        "Pay ₹ ${total.toStringAsFixed(0)}",
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
