@@ -29,6 +29,23 @@ class CategoriesPage extends StatelessWidget {
     "assets/bedsheet.webp",
     "assets/bedsheet.webp",
   ];
+  final List<String> serviceTitles = [
+    "Dry Clean",
+    "Premium",
+    "Home Bounds",
+    "Shoes",
+    "White cloths",
+    "Express",
+  ];
+
+  final List<String> serviceIcons = [
+    "assets/dry-clean.png",
+    "assets/primium.png",
+    "assets/home-bounds.png",
+    "assets/shoe.png",
+    "assets/white.png",
+    "assets/shoe.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +70,56 @@ class CategoriesPage extends StatelessWidget {
               ),
               // height: 200,
               child: Center(child: const GlobalBannerAd()),
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          sliver: SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.background,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 6,
+                        spreadRadius: -3,
+                        offset: Offset(0, 3),
+                        color: AppColors.boxShadowPink,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(serviceIcons[index], height: 85),
+                      const SizedBox(height: 8),
+                      Text(
+                        serviceTitles[index],
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              childCount: 6, // 2 rows × 3
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1,
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              "Wash & Iron",
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ),
@@ -100,7 +167,10 @@ class CategoriesPage extends StatelessWidget {
                     ),
                     child: Image.asset(productImg[index]),
                   ),
-                  Text(item, style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    "$item ",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   BlocBuilder<CartBloc, CartState>(
                     builder: (context, state) {
                       int count = 0;
@@ -125,18 +195,27 @@ class CategoriesPage extends StatelessWidget {
                               size: 30,
                             ),
                           ),
-                          Text("$count"),
-                          IconButton(
-                            onPressed: () {
-                              context.read<CartBloc>().add(
-                                AddItem(
-                                  id: index,
-                                  name: item,
-                                  price: itemPrice,
-                                ),
-                              );
-                            },
-                            icon: Image.asset("assets/bag.png"),
+                          SizedBox(width: 2, child: Text("$count")),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context.read<CartBloc>().add(
+                                    AddItem(
+                                      id: index,
+                                      name: item,
+                                      price: itemPrice,
+                                    ),
+                                  );
+                                },
+                                icon: Image.asset("assets/bag.png"),
+                              ),
+                              Text(
+                                "₹ $itemPrice",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
                           ),
                         ],
                       );
