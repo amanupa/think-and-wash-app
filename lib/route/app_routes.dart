@@ -10,4 +10,8 @@ class AppRoutes {
   static const String watchNearn = "/wNe";
   static const String privacyNpolicy = "/pNp";
   static const String dryClean = "/dc";
+  static const String premium = "/pc";
+  static const String homebounds = "/hb";
+  static const String shoes = "/sc";
+  static const String bags = "/bc";
 }

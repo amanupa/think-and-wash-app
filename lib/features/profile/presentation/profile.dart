@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:super_tooltip/super_tooltip.dart';
 
 import '../../../core/app_colors.dart';
 

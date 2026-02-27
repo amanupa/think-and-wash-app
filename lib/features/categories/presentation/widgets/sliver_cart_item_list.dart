@@ -7,8 +7,13 @@ import '../../data/models/category_item_model.dart';
 
 class SliverCartItemList extends StatelessWidget {
   final List<ProductItem> items;
+  final bool iscartbutton;
 
-  const SliverCartItemList({super.key, required this.items});
+  const SliverCartItemList({
+    super.key,
+    required this.items,
+    required this.iscartbutton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,45 +59,49 @@ class SliverCartItemList extends StatelessWidget {
 
                   if (state is CartLoaded) {
                     final existing =
-                        state.items.where((e) => e.id == index).toList();
+                        state.items.where((e) => e.id == item.id).toList();
 
                     if (existing.isNotEmpty) {
                       count = existing.first.quantity;
                     }
                   }
 
-                  return Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          context.read<CartBloc>().add(RemoveItem(index));
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: AppColors.boxShadowPink,
+                  return SizedBox(
+                    //width: 187,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            context.read<CartBloc>().add(RemoveItem(item.id));
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: AppColors.boxShadowPink,
+                          ),
                         ),
-                      ),
 
-                      Text("$count"),
+                        Text("$count"),
 
-                      IconButton(
-                        onPressed: () {
-                          context.read<CartBloc>().add(
-                            AddItem(
-                              id: index,
-                              name: item.name,
-                              price: item.price,
-                            ),
-                          );
-                        },
-                        icon: Image.asset("assets/bag.png"),
-                      ),
+                        IconButton(
+                          onPressed: () {
+                            context.read<CartBloc>().add(
+                              AddItem(
+                                id: item.id,
+                                name: item.name,
+                                price: item.price,
+                              ),
+                            );
+                          },
+                          icon: Image.asset("assets/bag.png"),
+                        ),
 
-                      Text(
-                        "₹ ${item.price}",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
+                        Text(
+                          "₹ ${item.price}",
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

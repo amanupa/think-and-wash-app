@@ -30,6 +30,12 @@ class _CustomInfoTooltipState extends State<CustomInfoTooltip> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SuperTooltip(
       controller: _controller,
@@ -42,8 +48,7 @@ class _CustomInfoTooltipState extends State<CustomInfoTooltip> {
       arrowBaseWidth: 18,
       arrowTipDistance: 10,
       constraints: BoxConstraints(
-        maxWidth:
-            MediaQuery.of(context).size.width * 1, // ⭐ prevents text overflow
+        maxWidth: MediaQuery.of(context).size.width * 1,
       ),
 
       boxShadows: [

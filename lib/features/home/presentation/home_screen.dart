@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
 
-        body: TabBarView(children: [CategoriesPage(), Cart()]),
+        body: TabBarView(children: [CategoriesPage(), Cart(istab: true)]),
       ),
     );
   }

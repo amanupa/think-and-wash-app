@@ -6,8 +6,8 @@ import 'package:think_and_wash/features/categories/presentation/widgets/sliver_c
 import '../../../../core/custom_circular_button.dart';
 import '../../../../route/app_routes.dart';
 
-class Shoes extends StatelessWidget {
-  const Shoes({super.key});
+class Bags extends StatelessWidget {
+  const Bags({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class Shoes extends StatelessWidget {
             slivers: [
               SliverAppBar(
                 backgroundColor: AppColors.background,
-                title: Text("Shoes Cleaning"),
+                title: Text("Bag Cleaning"),
                 centerTitle: true,
                 pinned: true,
               ),
               SliverCartItemList(
-                items: CategoryProductItems.shoesItems,
+                items: CategoryProductItems.bagItems,
                 iscartbutton: true,
               ),
             ],

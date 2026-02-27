@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:think_and_wash/features/auth/presentation/screen/login.dart';
+import 'package:think_and_wash/features/cart/presentation/cart.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/bags.dart';
 import 'package:think_and_wash/features/categories/presentation/widgets/dry_clean.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/home_bounds.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/premium.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/shoes.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
 import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
@@ -57,6 +62,31 @@ class RoutesNavigator {
       case AppRoutes.dryClean:
         return MaterialPageRoute(
           builder: (context) => DryClean(),
+          settings: settings,
+        );
+      case AppRoutes.premium:
+        return MaterialPageRoute(
+          builder: (context) => Premium(),
+          settings: settings,
+        );
+      case AppRoutes.homebounds:
+        return MaterialPageRoute(
+          builder: (context) => HomeBounds(),
+          settings: settings,
+        );
+      case AppRoutes.shoes:
+        return MaterialPageRoute(
+          builder: (context) => Shoes(),
+          settings: settings,
+        );
+      case AppRoutes.bags:
+        return MaterialPageRoute(
+          builder: (context) => Bags(),
+          settings: settings,
+        );
+      case AppRoutes.cart:
+        return MaterialPageRoute(
+          builder: (context) => Cart(istab: false),
           settings: settings,
         );
       default:

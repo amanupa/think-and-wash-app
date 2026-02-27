@@ -10,18 +10,19 @@ class CategoriesPage extends StatelessWidget {
   CategoriesPage({super.key});
   final List<String> route = const [
     AppRoutes.dryClean,
-    AppRoutes.dryClean,
-    AppRoutes.dryClean,
-    AppRoutes.dryClean,
-    AppRoutes.dryClean,
+    AppRoutes.premium,
+    AppRoutes.homebounds,
+    AppRoutes.shoes,
+    AppRoutes.bags,
   ];
   final List<String> serviceTitles = [
     "Dry Clean",
     "Premium",
     "Home Bounds",
     "Shoes",
+
+    "Bags",
     "White cloths",
-    "Express",
   ];
 
   final List<String> serviceIcons = [
@@ -29,8 +30,9 @@ class CategoriesPage extends StatelessWidget {
     "assets/primium.png",
     "assets/home-bounds.png",
     "assets/shoe.png",
+
+    "assets/bagss.png",
     "assets/white.png",
-    "assets/shoe.png",
   ];
 
   @override
@@ -114,7 +116,10 @@ class CategoriesPage extends StatelessWidget {
             ),
           ),
         ),
-        SliverCartItemList(items: washItems),
+        SliverCartItemList(
+          items: CategoryProductItems.washItems,
+          iscartbutton: false,
+        ),
       ],
     );
   }
