@@ -40,6 +40,7 @@ dependencies:
   google_mobile_ads: ^6.0.0
   dropdown_button2: ^2.3.9
   super_tooltip: ^2.1.0
+  equatable: ^2.0.8
 
 dev_dependencies:
   flutter_test:
