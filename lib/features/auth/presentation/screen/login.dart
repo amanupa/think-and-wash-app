@@ -47,7 +47,7 @@ class Login extends StatelessWidget {
             return OtpTextFieldForm(
               formController: phnController,
               hintText: "Phone number for otp",
-              buttonText: "Request Otp",
+              buttonText: "Otp",
               isLoading: state is OtpRequestedLoading,
               onPressed: () {
                 context.read<AuthBloc>().add(

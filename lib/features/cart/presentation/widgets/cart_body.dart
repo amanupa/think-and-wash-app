@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:think_and_wash/features/pickupSlot/presentation/slot_selection_container.dart';
 
 import '../../../../core/app_colors.dart';
 import '../../../../core/custom_button.dart';
@@ -62,6 +63,12 @@ class CartBody extends StatelessWidget {
                   ),
 
                   const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SlotSelectionSection(vendorId: "vendorId"),
+                    ),
+                  ),
 
                   //Address card
                   AddressCard(),

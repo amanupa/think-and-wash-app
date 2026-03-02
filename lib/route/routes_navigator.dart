@@ -8,9 +8,10 @@ import 'package:think_and_wash/features/categories/presentation/widgets/premium.
 import 'package:think_and_wash/features/categories/presentation/widgets/shoes.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
+import 'package:think_and_wash/features/order/presentation/screens/order.dart';
 import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
 import 'package:think_and_wash/features/profile/presentation/profile.dart';
-import 'package:think_and_wash/features/trackOrder/track_order.dart';
+
 import 'package:think_and_wash/features/watchEarn/watch_and_earn.dart';
 
 import 'package:think_and_wash/route/app_routes.dart';
@@ -51,7 +52,7 @@ class RoutesNavigator {
         );
       case AppRoutes.trackOrder:
         return MaterialPageRoute(
-          builder: (context) => TrackOrder(),
+          builder: (context) => OrderScreen(),
           settings: settings,
         );
       case AppRoutes.profile:
