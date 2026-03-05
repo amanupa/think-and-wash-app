@@ -32,6 +32,7 @@ class Login extends StatelessWidget {
           if (state is OtpRequestedSuccess || state is OtpValidationFailure) {
             return OtpTextFieldForm(
               formController: otpController,
+              page: "Submit Otp",
               hintText: "Enter Otp",
               buttonText: "Submit Otp",
               isLoading: state is OtpValidationLoading,
@@ -46,6 +47,7 @@ class Login extends StatelessWidget {
           if (state is OtpRequestedFailure || state is AuthInitial) {
             return OtpTextFieldForm(
               formController: phnController,
+              page: "Otp",
               hintText: "Phone number for otp",
               buttonText: "Otp",
               isLoading: state is OtpRequestedLoading,
