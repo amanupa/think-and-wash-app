@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:think_and_wash/features/profile/domain/profile_entity.dart';
+import 'package:think_and_wash/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../core/app_colors.dart';
 
@@ -168,8 +171,19 @@ class _ProfileState extends State<Profile> {
                     child: TextButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Call API here
-                          print("Profile Updated");
+                          context.read<ProfileBloc>().add(
+                            ProfileUpdateRequestedEvent(
+                              entity: ProfileEntity(
+                                name: firstName.text + lastName.text,
+                                email: email.text,
+                                gender: gender!.toLowerCase(),
+                                fullAddress: address.text,
+                                landmark: landmark.text,
+                                pincode: pincode.text,
+                              ),
+                            ),
+                          );
+                          debugPrint("Profile Updated");
                         }
                       },
                       child: Text(

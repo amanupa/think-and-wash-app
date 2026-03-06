@@ -3,7 +3,10 @@ import 'package:think_and_wash/core/exception.dart';
 import 'package:think_and_wash/core/failure.dart';
 import 'package:think_and_wash/features/auth/data/auth_datasource.dart';
 import 'package:think_and_wash/features/auth/data/auth_model.dart';
+import 'package:think_and_wash/features/auth/domain/auth_entity.dart';
 import 'package:think_and_wash/features/auth/domain/auth_repository.dart';
+
+import '../../../core/secure_storage.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource dataSource;
@@ -22,9 +25,15 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthModel>> submitOtp(String otp) async {
+  Future<Either<Failure, AuthModel>> submitOtp(AuthEntity entity) async {
     try {
-      final result = await dataSource.submitOtp(otp);
+      final result = await dataSource.submitOtp(entity);
+      if (result.token != null) {
+        await SecureStorageService.writeData(
+          key: "auth_token",
+          value: result.token!,
+        );
+      }
       return right(result);
     } on ApiException catch (err) {
       return left(ApiFailure(message: err.message));

@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:think_and_wash/core/secure_storage.dart';
+import 'package:think_and_wash/features/auth/data/auth_model.dart';
+import 'package:think_and_wash/features/auth/domain/auth_entity.dart';
 import 'package:think_and_wash/features/auth/domain/get_otp_usecase.dart';
 import 'package:think_and_wash/features/auth/domain/submit_otp_usecase.dart';
 
@@ -25,16 +29,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(OtpRequestedLoading());
     try {
       if (event.phn == "9999999999") {
-        emit(OtpRequestedSuccess(otp: "1234"));
+        emit(OtpRequestedSuccess(otp: "1234", phn: event.phn));
       } else {
-        print("this is the phn for otp request: ${event.phn}");
+        debugPrint("this is the phn for otp request: ${event.phn}");
         final result = await getOtpUsecase(event.phn);
         result.fold(
           (failure) {
             emit(OtpRequestedFailure(msg: failure.message ?? "otp failure"));
           },
           (success) {
-            emit(OtpRequestedSuccess(otp: success));
+            emit(OtpRequestedSuccess(otp: success, phn: event.phn));
           },
         );
       }
@@ -46,12 +50,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _otpValidation(
     OtpValidationRequested event,
     Emitter<AuthState> emit,
-  ) {
+  ) async {
     emit(OtpValidationLoading());
-    if (event.otp == "1234") {
-      emit(OtpValidationSuccess(usrId: "Demo"));
+    if (event.entity.otp == "1234") {
+      emit(StaticOtpValidationSuccess(userId: "Demo"));
     } else {
-      emit(OtpValidationFailure());
+      debugPrint(
+        "this is the entity body for otp validation: ${event.entity.otp}, ${event.entity.phone},${event.entity.role} ",
+      );
+      final result = await submitOtpUsecase(event.entity);
+
+      result.fold(
+        (failure) {
+          emit(
+            OtpValidationFailure(
+              msg: failure.message ?? "validation failed...",
+              phn: event.entity.phone,
+            ),
+          );
+        },
+        (success) {
+          emit(OtpValidationSuccess(userMOdel: success));
+        },
+      );
     }
   }
 }

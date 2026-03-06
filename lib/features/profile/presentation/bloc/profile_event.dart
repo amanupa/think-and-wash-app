@@ -1,4 +1,13 @@
 part of 'profile_bloc.dart';
 
 @immutable
-sealed class ProfileEvent {}
+sealed class ProfileEvent extends Equatable {}
+
+final class ProfileUpdateRequestedEvent extends ProfileEvent {
+  final ProfileEntity entity;
+
+  ProfileUpdateRequestedEvent({required this.entity});
+
+  @override
+  List<Object?> get props => [entity];
+}
