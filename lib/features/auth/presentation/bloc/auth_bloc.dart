@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:think_and_wash/core/secure_storage.dart';
+
 import 'package:think_and_wash/features/auth/data/auth_model.dart';
 import 'package:think_and_wash/features/auth/domain/auth_entity.dart';
 import 'package:think_and_wash/features/auth/domain/get_otp_usecase.dart';
@@ -20,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     : super(AuthInitial()) {
     on<OtpRequested>(_otpRequested);
     on<OtpValidationRequested>(_otpValidation);
+    on<UpdateUser>(_updateUser);
   }
 
   FutureOr<void> _otpRequested(
@@ -70,8 +71,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
         },
         (success) {
-          emit(OtpValidationSuccess(userMOdel: success));
+          emit(
+            OtpValidationSuccess(
+              userMOdel: success.user!,
+              token: success.token!,
+            ),
+          );
         },
+      );
+    }
+  }
+
+  FutureOr<void> _updateUser(UpdateUser event, Emitter<AuthState> emit) {
+    final currentState = state;
+
+    if (currentState is OtpValidationSuccess) {
+      emit(
+        OtpValidationSuccess(userMOdel: event.user, token: currentState.token),
       );
     }
   }

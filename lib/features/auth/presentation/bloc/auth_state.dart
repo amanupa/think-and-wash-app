@@ -51,12 +51,13 @@ final class OtpValidationFailure extends AuthState {
 }
 
 final class OtpValidationSuccess extends AuthState {
-  final AuthModel userMOdel;
+  final User userMOdel;
+  final String token;
 
-  OtpValidationSuccess({required this.userMOdel});
+  OtpValidationSuccess({required this.userMOdel, required this.token});
 
   @override
-  List<Object?> get props => [userMOdel];
+  List<Object?> get props => [userMOdel, token];
 }
 
 final class StaticOtpValidationSuccess extends AuthState {

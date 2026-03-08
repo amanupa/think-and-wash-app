@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 import 'package:think_and_wash/core/api_clients.dart';
 import 'package:think_and_wash/core/app_url.dart';
 import 'package:think_and_wash/core/exception.dart';
@@ -19,13 +20,19 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
       final url = AppUrl.host + AppUrl.updateProfile;
 
       final response = await ApiClient.post(url: url, body: entity.toJson());
+      debugPrint(
+        "this is the respose status code in update profile: ${response.statusCode}",
+      );
 
       if (response.statusCode == 200) {
+        debugPrint("update profile response body: ${response.body}");
+
         final decoded = jsonDecode(response.body);
 
-        final authModel = AuthModel.fromJson(decoded);
+        final user = User.fromJson(decoded["data"]);
+        debugPrint("before returning in update profile: ${user.email}");
 
-        return authModel.user!;
+        return user;
       }
       throw ApiException(message: response.body);
     } catch (err) {

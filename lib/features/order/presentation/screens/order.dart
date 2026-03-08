@@ -32,11 +32,11 @@ class OrderScreen extends StatelessWidget {
             ),
             actions: [
               Container(
-                height: 50,
-                width: 50,
+                height: 40,
+                width: 40,
                 margin: EdgeInsets.only(right: 10),
 
-                decoration: BoxDecoration(
+                /* decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.background,
 
@@ -47,7 +47,7 @@ class OrderScreen extends StatelessWidget {
                       color: AppColors.boxShadowPink,
                     ),
                   ],
-                ),
+                ),*/
                 child: Image.asset(
                   "assets/cart.png",
                   fit: BoxFit.cover,

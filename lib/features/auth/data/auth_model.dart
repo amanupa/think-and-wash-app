@@ -16,7 +16,13 @@ class AuthModel {
     success: json?["success"],
     message: json?["message"],
     token: json?["token"],
-    user: json?["user"] != null ? User.fromJson(json?["user"]) : null,
+    user:
+        json?["user"] != null
+            ? User.fromJson(json?["user"])
+            : json?["data"] != null
+            ? User.fromJson(json?["data"])
+            : null,
+    // user: json?["user"] != null ? User.fromJson(json?["user"]) : null,
   );
 
   Map<String, dynamic> toJson() => {

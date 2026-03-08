@@ -21,7 +21,7 @@ class CustomDropdownField extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
-        value: value,
+        value: items.contains(value) ? value : null,
 
         hint: Text(hint, style: Theme.of(context).textTheme.titleSmall),
 

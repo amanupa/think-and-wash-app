@@ -20,3 +20,11 @@ final class OtpValidationRequested extends AuthEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
+class UpdateUser extends AuthEvent {
+  final User user;
+
+  UpdateUser({required this.user});
+  @override
+  List<Object?> get props => [user];
+}
