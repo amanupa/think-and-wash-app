@@ -12,8 +12,8 @@ final class PickUpSlotInitial extends PickUpSlotState {}
 class UserSlotLoading extends PickUpSlotState {}
 
 class UserSlotLoaded extends PickUpSlotState {
-  final List<PickupSlot> slots;
-  final PickupSlot? selectedSlot;
+  final List<PickUpSlot> slots;
+  final PickUpSlot? selectedSlot;
 
   const UserSlotLoaded(this.slots, {this.selectedSlot});
   @override

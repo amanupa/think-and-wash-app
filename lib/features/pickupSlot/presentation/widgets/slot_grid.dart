@@ -3,9 +3,9 @@ import 'package:think_and_wash/core/app_colors.dart';
 import 'package:think_and_wash/features/pickupSlot/data/pickup_slot_model.dart';
 
 class SlotGrid extends StatelessWidget {
-  final List<PickupSlot> slots;
-  final PickupSlot? selectedSlot;
-  final Function(PickupSlot) onSelect;
+  final List<PickUpSlot> slots;
+  final PickUpSlot? selectedSlot;
+  final Function(PickUpSlot) onSelect;
 
   const SlotGrid({
     super.key,
@@ -31,17 +31,18 @@ class SlotGrid extends StatelessWidget {
         itemBuilder: (context, index) {
           final slot = slots[index];
           final isSelected = selectedSlot?.id == slot.id;
+          debugPrint("selected slot: ${selectedSlot?.id}");
 
           return GestureDetector(
-            onTap: slot.isAvailable ? () => onSelect(slot) : null,
+            onTap: slot.availableCapacity > 0 ? () => onSelect(slot) : null,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               decoration: BoxDecoration(
                 color:
-                    !slot.isAvailable
-                        ? Colors.grey.shade300
-                        : isSelected
+                    slot.availableCapacity > 0
                         ? AppColors.background
+                        : isSelected
+                        ? AppColors.seedColor
                         : AppColors.background,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow:
@@ -77,8 +78,11 @@ class SlotGrid extends StatelessWidget {
   }
 
   String _formatSlotTime(DateTime start, DateTime end) {
-    final startHour = start.hour;
-    final endHour = end.hour;
+    final localStart = start.toLocal();
+    final localEnd = end.toLocal();
+
+    final startHour = localStart.hour;
+    final endHour = localEnd.hour;
 
     final startLabel = _formatHour(startHour);
     final endLabel = _formatHour(endHour);

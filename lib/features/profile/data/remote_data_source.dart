@@ -11,9 +11,7 @@ abstract class ProfileRemoteDataSource {
 }
 
 class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
-  final ApiClient apiClient;
-
-  ProfileRemoteDataSourceImpl({required this.apiClient});
+  ProfileRemoteDataSourceImpl();
   @override
   Future<User> updateProfile(ProfileEntity entity) async {
     try {

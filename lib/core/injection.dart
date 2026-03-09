@@ -5,6 +5,10 @@ import 'package:think_and_wash/features/auth/data/auth_repository_impl.dart';
 import 'package:think_and_wash/features/auth/domain/auth_repository.dart';
 import 'package:think_and_wash/features/auth/domain/get_otp_usecase.dart';
 import 'package:think_and_wash/features/auth/domain/submit_otp_usecase.dart';
+import 'package:think_and_wash/features/pickupSlot/data/pickup_slot_repository_impl.dart';
+import 'package:think_and_wash/features/pickupSlot/data/remote_datasource.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_repository.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_usecase.dart';
 import 'package:think_and_wash/features/profile/data/profile_repository_impl.dart';
 import 'package:think_and_wash/features/profile/data/remote_data_source.dart';
 import 'package:think_and_wash/features/profile/domain/profile_repository.dart';
@@ -26,7 +30,10 @@ void _core() {
 void _dataSources() {
   sl.registerLazySingleton<AuthDatasource>(() => AuthDataSourceImpl());
   sl.registerLazySingleton<ProfileRemoteDataSource>(
-    () => ProfileRemoteDataSourceImpl(apiClient: sl()),
+    () => ProfileRemoteDataSourceImpl(),
+  );
+  sl.registerLazySingleton<PickUpSlotRemoteDataSource>(
+    () => PickUpSlotRemoteDataSourceImpl(),
   );
 }
 
@@ -37,10 +44,14 @@ void _repositories() {
   sl.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(dataSource: sl()),
   );
+  sl.registerLazySingleton<PickupSlotRepository>(
+    () => PickupSlotRepositoryImpl(dataSource: sl()),
+  );
 }
 
 void _useCases() {
   sl.registerLazySingleton(() => GetOtpUsecase(repository: sl()));
   sl.registerLazySingleton(() => SubmitOtpUsecase(repository: sl()));
   sl.registerLazySingleton(() => ProfileUsecase(repository: sl()));
+  sl.registerLazySingleton(() => PickupSlotUsecase(repository: sl()));
 }
