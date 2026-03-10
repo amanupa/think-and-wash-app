@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:think_and_wash/core/secure_storage.dart';
 
 class ApiClient {
   static Future<Map<String, String>> _getHeaders() async {
     final token = await SecureStorageService.readData(key: "auth_token");
+    debugPrint("fetching saved user token from secure storage: $token");
 
     return {
       "Content-Type": "application/json",
@@ -21,7 +23,7 @@ class ApiClient {
     return await http.post(
       Uri.parse(url),
       headers: headers,
-      body: jsonEncode(body),
+      body: body != null ? jsonEncode(body) : jsonEncode({}),
     );
   }
 

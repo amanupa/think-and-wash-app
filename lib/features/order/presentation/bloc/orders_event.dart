@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:think_and_wash/features/order/domain/entity/create_order_entity.dart';
 
-import '../../domain/order_entity.dart';
+import '../../domain/entity/order_entity.dart';
 
 abstract class OrderEvent extends Equatable {
   const OrderEvent();
@@ -9,20 +10,24 @@ abstract class OrderEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadOrders extends OrderEvent {
-  final String usrId;
-
-  const LoadOrders({required this.usrId});
+class GetOrdersEvent extends OrderEvent {
+  const GetOrdersEvent();
   @override
-  List<Object?> get props => [usrId];
+  List<Object?> get props => [];
+}
+
+class CreateOrderEvent extends OrderEvent {
+  final CreateOrderEntity entity;
+
+  const CreateOrderEvent({required this.entity});
+  @override
+  List<Object?> get props => [entity];
 }
 
 class RefreshOrders extends OrderEvent {
-  final String usrId;
-
-  const RefreshOrders({required this.usrId});
+  const RefreshOrders();
   @override
-  List<Object?> get props => [usrId];
+  List<Object?> get props => [];
 }
 
 class ChangeTab extends OrderEvent {
@@ -32,14 +37,4 @@ class ChangeTab extends OrderEvent {
 
   @override
   List<Object?> get props => [status];
-}
-
-class UpdateOrderStatus extends OrderEvent {
-  final String orderId;
-  final OrderStatus status;
-
-  const UpdateOrderStatus({required this.orderId, required this.status});
-
-  @override
-  List<Object?> get props => [orderId, status];
 }

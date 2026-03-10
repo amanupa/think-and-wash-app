@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:think_and_wash/features/order/data/model/order.dart';
 
 import '../../../../core/app_colors.dart';
-import '../../domain/order_entity.dart';
 
 class OrderCard extends StatelessWidget {
-  final OrderEntity order;
+  final Datum order;
 
   const OrderCard({super.key, required this.order});
 
@@ -37,11 +38,11 @@ class OrderCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                order.userName,
+                "Vendor: ${order.venName}",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
-                order.userPhone,
+                order.venPhone,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -50,14 +51,26 @@ class OrderCard extends StatelessWidget {
           const SizedBox(height: 8),
 
           /// Address
-          Text(order.address, style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            "Pickup: ${order.address}",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
 
           const SizedBox(height: 8),
 
           /// Total Items
-          Text(
-            "Total Items: ${order.itemCount}",
-            style: Theme.of(context).textTheme.titleSmall,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total Items: ${order.itemCount}",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              Text(
+                "Pickup Time: ${formatTime(order.slotStart!)}",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
           ),
 
           const SizedBox(height: 8),
@@ -73,10 +86,10 @@ class OrderCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    order.paymentType == PaymentType.cod ? ".COD" : ".PAID",
+                    order.paymentType,
                     style: TextStyle(
                       color:
-                          order.paymentType == PaymentType.cod
+                          order.paymentType == "cod"
                               ? Colors.orange
                               : Colors.green,
                       fontWeight: FontWeight.bold,
@@ -85,7 +98,7 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
               Text(
-                "Order Date: ${order.orderDate.toLocal().toString().split(' ')[0]}",
+                "Pickup Date: ${order.slotDate!.toLocal().toString().split(' ')[0]}",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -93,5 +106,9 @@ class OrderCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String formatTime(DateTime time) {
+    return DateFormat('h:mm a').format(time.toLocal());
   }
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/app_colors.dart';
-import 'package:think_and_wash/features/order/data/datasource/local_datasporce.dart';
+
 import 'package:think_and_wash/features/order/presentation/bloc/orders_bloc.dart';
 import 'package:think_and_wash/features/order/presentation/bloc/orders_event.dart';
 
 import 'package:think_and_wash/features/order/presentation/screens/delivered.dart';
 import 'package:think_and_wash/features/order/presentation/screens/delivery.dart';
 import 'package:think_and_wash/features/order/presentation/screens/pickup.dart';
+import 'package:think_and_wash/core/injection.dart' as di;
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({super.key});
@@ -17,8 +18,8 @@ class OrderScreen extends StatelessWidget {
     return BlocProvider(
       create:
           (_) =>
-              OrderBloc(MockOrderRepository())
-                ..add(LoadOrders(usrId: "user_02")),
+              OrderBloc(getOrderUsecase: di.sl(), createOrderUsecase: di.sl())
+                ..add(GetOrdersEvent()),
       child: DefaultTabController(
         length: 3,
         child: Scaffold(

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/rendering.dart';
 import 'package:think_and_wash/core/exception.dart';
 import 'package:think_and_wash/core/failure.dart';
 import 'package:think_and_wash/features/auth/data/auth_datasource.dart';
@@ -28,6 +29,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, AuthModel>> submitOtp(AuthEntity entity) async {
     try {
       final result = await dataSource.submitOtp(entity);
+      debugPrint(
+        "this is result token in submit otp repository ${result.token}",
+      );
       if (result.token != null) {
         await SecureStorageService.writeData(
           key: "auth_token",

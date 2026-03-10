@@ -1,51 +1,48 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:think_and_wash/features/order/domain/order_repository.dart';
+import 'package:think_and_wash/core/usecase_interfase.dart';
+import 'package:think_and_wash/features/order/domain/usecase/create_order_usecase.dart';
+import 'package:think_and_wash/features/order/domain/usecase/get_order_usecase.dart';
+
 import 'package:think_and_wash/features/order/presentation/bloc/orders_event.dart';
 import 'package:think_and_wash/features/order/presentation/bloc/orders_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
-  final OrderRepository repository;
-
-  OrderBloc(this.repository)
-    : super(const OrderState(isLoading: false, allOrders: [])) {
-    on<LoadOrders>(_onLoadOrders);
-    // on<RefreshOrders>(_onLoadOrders);
-
-    on<UpdateOrderStatus>(_onUpdateOrderStatus);
+  final GetOrderUsecase getOrderUsecase;
+  final CreateOrderUsecase createOrderUsecase;
+  OrderBloc({required this.createOrderUsecase, required this.getOrderUsecase})
+    : super(OrderInitialState()) {
+    on<GetOrdersEvent>(_onGetOrders);
+    on<CreateOrderEvent>(_onCreateOrder);
   }
 
-  Future<void> _onUpdateOrderStatus(
-    UpdateOrderStatus event,
+  FutureOr<void> _onGetOrders(
+    GetOrdersEvent event,
     Emitter<OrderState> emit,
   ) async {
     try {
-      await repository.updateOrderStatus(
-        orderId: event.orderId,
-        status: event.status,
+      emit(OrderLoadingState());
+      final result = await getOrderUsecase(NoParams());
+      result.fold(
+        (failure) {
+          emit(GetOrderFailureState(msg: failure.message ?? "Something wrong"));
+        },
+        (success) {
+          emit(GetOrderSuccessState(orders: success));
+        },
       );
-
-      final updatedOrders =
-          state.allOrders.map((order) {
-            if (order.id == event.orderId) {
-              return order.copyWith(status: event.status);
-            }
-            return order;
-          }).toList();
-
-      emit(state.copyWith(allOrders: updatedOrders));
-    } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+    } catch (err) {
+      emit(
+        OrderServerFailureState(
+          msg: "Its not you its us, Sorry for the inconvenience",
+        ),
+      );
     }
   }
 
-  Future<void> _onLoadOrders(LoadOrders event, Emitter<OrderState> emit) async {
-    emit(state.copyWith(isLoading: true, error: null));
-
-    try {
-      final orders = await repository.getOrders(event.usrId);
-      emit(state.copyWith(isLoading: false, allOrders: orders));
-    } catch (e) {
-      emit(state.copyWith(isLoading: false, error: e.toString()));
-    }
-  }
+  FutureOr<void> _onCreateOrder(
+    CreateOrderEvent event,
+    Emitter<OrderState> emit,
+  ) {}
 }
