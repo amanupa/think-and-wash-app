@@ -8,7 +8,9 @@ import 'package:think_and_wash/features/categories/presentation/widgets/premium.
 import 'package:think_and_wash/features/categories/presentation/widgets/shoes.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
+import 'package:think_and_wash/features/order/data/model/order.dart';
 import 'package:think_and_wash/features/order/presentation/screens/order.dart';
+import 'package:think_and_wash/features/order/presentation/screens/order_details.dart';
 import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
 import 'package:think_and_wash/features/profile/presentation/profile.dart';
 
@@ -88,6 +90,12 @@ class RoutesNavigator {
       case AppRoutes.cart:
         return MaterialPageRoute(
           builder: (context) => Cart(istab: false),
+          settings: settings,
+        );
+      case AppRoutes.orderDetails:
+        return MaterialPageRoute(
+          builder:
+              (context) => OrderDetails(order: settings.arguments as Datum),
           settings: settings,
         );
       default:

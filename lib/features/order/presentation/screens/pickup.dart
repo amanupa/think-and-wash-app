@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:think_and_wash/route/app_routes.dart';
 
 import '../../data/model/order.dart';
 
@@ -34,7 +35,16 @@ class Pickup extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               final order = orders[index];
-              return OrderCard(order: order);
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.orderDetails,
+                    arguments: order,
+                  );
+                },
+                child: OrderCard(order: order),
+              );
             },
           );
         }
