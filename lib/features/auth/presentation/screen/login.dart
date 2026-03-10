@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/snack_bar_messages.dart';
+import 'package:think_and_wash/features/auth/domain/auth_entity.dart';
 import 'package:think_and_wash/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:think_and_wash/route/app_routes.dart';
 
@@ -32,20 +33,35 @@ class Login extends StatelessWidget {
           if (state is OtpRequestedSuccess || state is OtpValidationFailure) {
             return OtpTextFieldForm(
               formController: otpController,
+              page: "Submit Otp",
               hintText: "Enter Otp",
               buttonText: "Submit Otp",
               isLoading: state is OtpValidationLoading,
               onPressed: () {
                 context.read<AuthBloc>().add(
-                  OtpValidationRequested(otp: otpController.text),
+                  OtpValidationRequested(
+                    entity: AuthEntity(
+                      otp: otpController.text,
+                      phone:
+                          state is OtpRequestedSuccess
+                              ? state.phn
+                              : state is OtpValidationFailure
+                              ? state.phn
+                              : "",
+                      role: "customer",
+                    ),
+                  ),
                 );
                 otpController.text = "";
               },
             );
           }
-          if (state is OtpRequestedFailure || state is AuthInitial) {
+          if (state is OtpRequestedFailure ||
+              state is AuthInitial ||
+              state is OtpRequestedLoading) {
             return OtpTextFieldForm(
               formController: phnController,
+              page: "Otp",
               hintText: "Phone number for otp",
               buttonText: "Otp",
               isLoading: state is OtpRequestedLoading,

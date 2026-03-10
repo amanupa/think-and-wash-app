@@ -1,30 +1,49 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/order_entity.dart';
+import '../../data/model/order.dart';
 
-class OrderState extends Equatable {
-  final bool isLoading;
-  final List<OrderEntity> allOrders;
-  final String? error;
+sealed class OrderState extends Equatable {}
 
-  const OrderState({
-    required this.isLoading,
-    required this.allOrders,
-    this.error,
-  });
-
-  OrderState copyWith({
-    bool? isLoading,
-    List<OrderEntity>? allOrders,
-    String? error,
-  }) {
-    return OrderState(
-      isLoading: isLoading ?? this.isLoading,
-      allOrders: allOrders ?? this.allOrders,
-      error: error,
-    );
-  }
-
+class OrderInitialState extends OrderState {
   @override
-  List<Object?> get props => [isLoading, allOrders, error];
+  List<Object?> get props => [];
+}
+
+class OrderLoadingState extends OrderState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CreateOrderSuccessState extends OrderState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CreateOrderFailureState extends OrderState {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetOrderSuccessState extends OrderState {
+  final OrdersModel orders;
+
+  GetOrderSuccessState({required this.orders});
+  @override
+  List<Object?> get props => [orders];
+}
+
+class GetOrderFailureState extends OrderState {
+  final String msg;
+
+  GetOrderFailureState({required this.msg});
+  @override
+  List<Object?> get props => [msg];
+}
+
+class OrderServerFailureState extends OrderState {
+  final String msg;
+
+  OrderServerFailureState({required this.msg});
+  @override
+  List<Object?> get props => [msg];
 }

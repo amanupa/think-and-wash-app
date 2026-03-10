@@ -66,7 +66,9 @@ class CartBody extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
-                      child: SlotSelectionSection(vendorId: "vendorId"),
+                      child: SlotSelectionSection(
+                        vendorId: "69ae5cc549a2b6ad583acc8a",
+                      ),
                     ),
                   ),
 

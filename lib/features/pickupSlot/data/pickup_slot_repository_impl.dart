@@ -1,19 +1,26 @@
-import 'pickup_slot_model.dart';
+import 'package:dartz/dartz.dart';
+import 'package:think_and_wash/core/exception.dart';
+import 'package:think_and_wash/core/failure.dart';
+import 'package:think_and_wash/features/pickupSlot/data/pickup_slot_model.dart';
+import 'package:think_and_wash/features/pickupSlot/data/remote_datasource.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_entity.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_repository.dart';
 
-class UserSlotRepository {
-  //final ApiClient api;this.api
+class PickupSlotRepositoryImpl extends PickupSlotRepository {
+  final PickUpSlotRemoteDataSource dataSource;
 
-  UserSlotRepository();
-
-  Future<List<PickupSlot>> fetchSlots(String vendorId, String date) async {
-    /*final res = await api.get(
-      "/public/pickup-slots",
-      query: {"vendorId": vendorId, "date": date},
-    );
-
-    final slotsJson = res.data['data']['slots'] as List;
-
-    return slotsJson.map((e) => PickupSlot.fromJson(e)).toList();*/
-    return [];
+  PickupSlotRepositoryImpl({required this.dataSource});
+  @override
+  Future<Either<Failure, PickupSlotModel>> getPickUpSLot(
+    PickupSlotEntity entity,
+  ) async {
+    try {
+      final result = await dataSource.getPickUpSlot(entity);
+      return right(result);
+    } on ApiException catch (err) {
+      return left(ApiFailure(message: err.message));
+    } on ServerException {
+      return left(ServerFailure());
+    }
   }
 }

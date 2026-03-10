@@ -44,7 +44,7 @@ class MyDrawer extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 3,
-                      spreadRadius: -5,
+                      spreadRadius: -6,
                       offset: Offset(0, 5),
                       color: AppColors.boxShadowPink,
                     ),
@@ -62,7 +62,7 @@ class MyDrawer extends StatelessWidget {
                   ),
                   title: Text(
                     lable[index],
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
               );

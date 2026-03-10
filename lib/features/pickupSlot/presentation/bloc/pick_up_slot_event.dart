@@ -8,16 +8,15 @@ sealed class PickUpSlotEvent extends Equatable {
 }
 
 class LoadUserSlots extends PickUpSlotEvent {
-  final String vendorId;
-  final String date;
+  final PickupSlotEntity entity;
 
-  const LoadUserSlots(this.vendorId, this.date);
+  const LoadUserSlots(this.entity);
   @override
-  List<Object> get props => [vendorId, date];
+  List<Object> get props => [entity];
 }
 
 class SelectSlot extends PickUpSlotEvent {
-  final PickupSlot slot;
+  final PickUpSlot slot;
 
   const SelectSlot(this.slot);
   @override

@@ -1,4 +1,4 @@
-import '../domain/order_entity.dart';
+import '../../domain/entity/order_entity.dart';
 
 class OrderModel extends OrderEntity {
   const OrderModel({

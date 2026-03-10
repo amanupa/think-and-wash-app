@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/app_colors.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_entity.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/bloc/pick_up_slot_bloc.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/widgets/date_selector.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/widgets/slot_grid.dart';
@@ -23,7 +24,9 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
     _selectedDate = _formatDate(DateTime.now());
 
     context.read<PickUpSlotBloc>().add(
-      LoadUserSlots(widget.vendorId, _selectedDate),
+      LoadUserSlots(
+        PickupSlotEntity(date: _selectedDate, vId: widget.vendorId),
+      ),
     );
   }
 
@@ -106,7 +109,7 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
     setState(() => _selectedDate = formatted);
 
     context.read<PickUpSlotBloc>().add(
-      LoadUserSlots(widget.vendorId, formatted),
+      LoadUserSlots(PickupSlotEntity(date: formatted, vId: widget.vendorId)),
     );
   }
 
