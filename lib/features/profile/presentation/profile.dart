@@ -38,6 +38,7 @@ class _ProfileState extends State<Profile> {
   bool isEditMode = false;
   bool isFirstTimeUser = false;
   void initializeUser(User user) {
+    debugPrint("inside initilizeUser function ");
     final parts = user.name?.split(" ") ?? [];
 
     firstName.text = parts.isNotEmpty ? parts.first : "";
@@ -60,21 +61,6 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    final authState = context.read<AuthBloc>().state;
-
-    if (authState is OtpValidationSuccess) {
-      final user = authState.userMOdel;
-
-      if (user != null) {
-        initializeUser(user);
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
@@ -91,6 +77,8 @@ class _ProfileState extends State<Profile> {
           }
         }
         if (state is ProfileUpdateSuccessState) {
+          debugPrint("ProfileUpdate success State");
+
           initializeUser(state.usr);
           setState(() {
             isEditMode = false;
@@ -111,148 +99,155 @@ class _ProfileState extends State<Profile> {
           title: Text("Profile", style: Theme.of(context).textTheme.titleLarge),
           centerTitle: true,
         ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// PERSONAL INFO
-                    sectionTitle(context, "Personal Information"),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: firstName,
-                      hint: "First Name",
-                      enabled: isEditMode,
-
-                      validator:
-                          (value) => value!.isEmpty ? "Enter first name" : null,
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: lastName,
-                      hint: "Last Name",
-                      enabled: isEditMode,
-                      validator:
-                          (value) => value!.isEmpty ? "Enter last name" : null,
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: email,
-                      hint: "Email",
-                      enabled: isEditMode,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value!.isEmpty) return "Enter email";
-                        if (!value.contains("@")) return "Enter valid email";
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    CustomDropdownField(
-                      value: gender,
-                      hint: "Select Gender",
-
-                      items: const ["Male", "Female"],
-                      onChanged: (val) => setState(() => gender = val),
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    /// ADDRESS SECTION
-                    Row(
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        sectionTitle(context, "Address"),
-                        const SizedBox(width: 6),
-                        const CustomInfoTooltip(
-                          message:
-                              "This address will be used as pickup and delivery address.",
+                        /// PERSONAL INFO
+                        sectionTitle(context, "Personal Information"),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: firstName,
+                          hint: "First Name",
+                          enabled: isEditMode,
+
+                          validator:
+                              (value) =>
+                                  value!.isEmpty ? "Enter first name" : null,
                         ),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: lastName,
+                          hint: "Last Name",
+                          enabled: isEditMode,
+                          validator:
+                              (value) =>
+                                  value!.isEmpty ? "Enter last name" : null,
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: email,
+                          hint: "Email",
+                          enabled: isEditMode,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value!.isEmpty) return "Enter email";
+                            if (!value.contains("@"))
+                              return "Enter valid email";
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        CustomDropdownField(
+                          value: gender,
+                          hint: "Select Gender",
+
+                          items: const ["Male", "Female"],
+                          onChanged: (val) => setState(() => gender = val),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        /// ADDRESS SECTION
+                        Row(
+                          children: [
+                            sectionTitle(context, "Address"),
+                            const SizedBox(width: 6),
+                            const CustomInfoTooltip(
+                              message:
+                                  "This address will be used as pickup and delivery address.",
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: address,
+                          enabled: isEditMode,
+                          hint: "Full Address (max 20 words)",
+                          //maxLines: 3,
+                          validator: (value) {
+                            if (value!.isEmpty) return "Enter address";
+                            if (value.split(" ").length > 10) {
+                              return "Maximum 10 words allowed";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: landmark,
+                          enabled: isEditMode,
+                          hint: "Nearby / Landmark",
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        CustomInputField(
+                          controller: pincode,
+                          enabled: isEditMode,
+                          hint: "Pincode",
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value!.length != 6) {
+                              return "Pincode must be exactly 6 digits";
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 40),
                       ],
                     ),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: address,
-                      enabled: isEditMode,
-                      hint: "Full Address (max 20 words)",
-                      //maxLines: 3,
-                      validator: (value) {
-                        if (value!.isEmpty) return "Enter address";
-                        if (value.split(" ").length > 10) {
-                          return "Maximum 10 words allowed";
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: landmark,
-                      enabled: isEditMode,
-                      hint: "Nearby / Landmark",
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    CustomInputField(
-                      controller: pincode,
-                      enabled: isEditMode,
-                      hint: "Pincode",
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value!.length != 6) {
-                          return "Pincode must be exactly 6 digits";
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 40),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (isEditMode)
+                      CustomButton(
+                        onpressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<ProfileBloc>().add(
+                              ProfileUpdateRequestedEvent(
+                                entity: ProfileEntity(
+                                  name: "${firstName.text} ${lastName.text}",
+                                  email: email.text,
+                                  gender: gender!.toLowerCase(),
+                                  fullAddress: address.text,
+                                  landmark: landmark.text,
+                                  pincode: pincode.text,
+                                ),
+                              ),
+                            );
+                            debugPrint("Profile Updated");
+                          }
+                        },
+                        btnTitle: "Update Profile ",
+                      ),
                   ],
                 ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (isEditMode)
-                  CustomButton(
-                    onpressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<ProfileBloc>().add(
-                          ProfileUpdateRequestedEvent(
-                            entity: ProfileEntity(
-                              name: "${firstName.text} ${lastName.text}",
-                              email: email.text,
-                              gender: gender!.toLowerCase(),
-                              fullAddress: address.text,
-                              landmark: landmark.text,
-                              pincode: pincode.text,
-                            ),
-                          ),
-                        );
-                        debugPrint("Profile Updated");
-                      }
-                    },
-                    btnTitle: "Update Profile ",
-                  ),
               ],
-            ),
-          ],
+            );
+          },
         ),
 
         floatingActionButton:

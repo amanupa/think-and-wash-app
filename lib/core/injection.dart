@@ -16,6 +16,7 @@ import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_repository
 import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_usecase.dart';
 import 'package:think_and_wash/features/profile/data/profile_repository_impl.dart';
 import 'package:think_and_wash/features/profile/data/remote_data_source.dart';
+import 'package:think_and_wash/features/profile/domain/get_profile_usecase.dart';
 import 'package:think_and_wash/features/profile/domain/profile_repository.dart';
 import 'package:think_and_wash/features/profile/domain/profile_usecase.dart';
 
@@ -67,4 +68,5 @@ void _useCases() {
   sl.registerLazySingleton(() => PickupSlotUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetOrderUsecase(repository: sl()));
   sl.registerLazySingleton(() => CreateOrderUsecase(repository: sl()));
+  sl.registerLazySingleton(() => GetProfileUsecase(repository: sl()));
 }

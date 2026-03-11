@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:think_and_wash/core/app_colors.dart';
 import 'package:think_and_wash/route/app_routes.dart';
 
+import '../../core/shared_preference.dart';
+
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
@@ -11,6 +13,7 @@ class MyDrawer extends StatelessWidget {
     "assets/privacy-policy.png",
     "assets/help-support.webp",
     "assets/wathcandearn.png",
+    "assets/logout.png",
   ];
   final List<String> lable = const [
     "Aman",
@@ -18,6 +21,7 @@ class MyDrawer extends StatelessWidget {
     "Privacy & Policy",
     "Customer Support",
     "Watch & Earn",
+    "Log Out",
   ];
   final List<String> route = const [
     AppRoutes.profile,
@@ -25,6 +29,7 @@ class MyDrawer extends StatelessWidget {
     AppRoutes.privacyNpolicy,
     AppRoutes.helpNsupport,
     AppRoutes.watchNearn,
+    AppRoutes.login,
   ];
 
   @override
@@ -51,9 +56,20 @@ class MyDrawer extends StatelessWidget {
                   ],
                 ),
                 child: ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(route[index]);
-                  },
+                  onTap:
+                      index == 5
+                          ? () {
+                            SharedPreferenceService.setBool(
+                              "isLoggedIn",
+                              false,
+                            );
+                            Navigator.of(
+                              context,
+                            ).pushReplacementNamed(route[index]);
+                          }
+                          : () {
+                            Navigator.of(context).pushNamed(route[index]);
+                          },
                   leading: SizedBox(
                     height: 40,
                     width: 40,

@@ -21,3 +21,8 @@ class EnableProfileEditEvent extends ProfileEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetProfileEvent extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+}

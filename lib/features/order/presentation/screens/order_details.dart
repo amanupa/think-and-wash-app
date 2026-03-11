@@ -41,19 +41,21 @@ class OrderDetails extends StatelessWidget {
             /// ORDER STATUS
             _SectionCard(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    order.status.toString().toUpperCase(),
+                    "Booked",
                     style: const TextStyle(
-                      color: AppColors.primary,
+                      color: AppColors.button,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     "Order ID : ${order.id}",
-                    style: const TextStyle(color: Colors.grey),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),
@@ -121,7 +123,7 @@ class OrderDetails extends StatelessWidget {
                               color: AppColors.boxShadowPink,
                               blurRadius: 6,
                               spreadRadius: -1,
-                              offset: Offset(0, 3),
+                              offset: Offset(0, 0),
                             ),
                           ],
                         ),
@@ -133,9 +135,8 @@ class OrderDetails extends StatelessWidget {
                               children: [
                                 Text(
                                   item.itemName,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                                 Text(
                                   item.categoryName,
@@ -147,7 +148,10 @@ class OrderDetails extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text("x${item.quantity}"),
+                                Text(
+                                  "x${item.quantity}",
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
                                 Text("₹${item.subtotal}"),
                               ],
                             ),

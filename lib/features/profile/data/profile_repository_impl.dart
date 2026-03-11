@@ -22,4 +22,16 @@ class ProfileRepositoryImpl extends ProfileRepository {
       return left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, User>> getProfile() async {
+    try {
+      final result = await dataSource.getProfile();
+      return right(result);
+    } on ApiException catch (err) {
+      return left(ApiFailure(message: err.message));
+    } on ServerException {
+      return left(ServerFailure());
+    }
+  }
 }

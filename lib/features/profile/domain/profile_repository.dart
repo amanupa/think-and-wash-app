@@ -6,4 +6,5 @@ import '../../../core/failure.dart';
 
 abstract class ProfileRepository {
   Future<Either<Failure, User>> updateProfile(ProfileEntity entity);
+  Future<Either<Failure, User>> getProfile();
 }

@@ -6,7 +6,8 @@ import 'package:think_and_wash/route/app_routes.dart';
 import 'package:think_and_wash/route/routes_navigator.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLogedIn;
+  const MyApp({super.key, required this.isLogedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(),
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RoutesNavigator.controller,
-      initialRoute: AppRoutes.login,
+      initialRoute: isLogedIn ? AppRoutes.home : AppRoutes.login,
     );
   }
 }

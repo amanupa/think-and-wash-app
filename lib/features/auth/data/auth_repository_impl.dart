@@ -8,6 +8,7 @@ import 'package:think_and_wash/features/auth/domain/auth_entity.dart';
 import 'package:think_and_wash/features/auth/domain/auth_repository.dart';
 
 import '../../../core/secure_storage.dart';
+import '../../../core/shared_preference.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource dataSource;
@@ -37,6 +38,7 @@ class AuthRepositoryImpl extends AuthRepository {
           key: "auth_token",
           value: result.token!,
         );
+        await SharedPreferenceService.setBool("isLoggedIn", true);
       }
       return right(result);
     } on ApiException catch (err) {

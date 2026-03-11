@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:think_and_wash/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../../core/app_colors.dart';
 import '../../../../route/app_routes.dart';
@@ -10,11 +11,11 @@ class AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        if (state is OtpValidationSuccess) {
+        if (state is ProfileUpdateSuccessState) {
           final address =
-              "${state.userMOdel.address} ${state.userMOdel.landmark} ${state.userMOdel.pincode}";
+              "${state.usr.address} ${state.usr.landmark} ${state.usr.pincode}";
           return SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -45,7 +46,7 @@ class AddressCard extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                state.userMOdel.address != null
+                                state.usr.address != null
                                     ? "Delivery / Pickup Address"
                                     : "Complete Profile",
                                 style: Theme.of(context).textTheme.titleMedium,
@@ -71,7 +72,7 @@ class AddressCard extends StatelessWidget {
                           const SizedBox(height: 6),
 
                           Text(
-                            state.userMOdel.address != null
+                            state.usr.address != null
                                 ? address
                                 : "Please update your profile first..",
                             style: Theme.of(context).textTheme.bodySmall,
