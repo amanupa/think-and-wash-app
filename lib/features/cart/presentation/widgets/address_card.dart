@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:think_and_wash/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:think_and_wash/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../../core/app_colors.dart';
@@ -24,19 +23,22 @@ class AddressCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: AppColors.boxShadowPink,
                       blurRadius: 10,
                       spreadRadius: -4,
-                      offset: const Offset(0, 4),
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.location_on_outlined, color: AppColors.secText),
+                    const Icon(
+                      Icons.location_on_outlined,
+                      color: AppColors.secText,
+                    ),
                     const SizedBox(width: 10),
 
                     Expanded(
@@ -60,7 +62,7 @@ class AddressCard extends StatelessWidget {
                                     AppRoutes.profile,
                                   );
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.edit,
                                   size: 20,
                                   color: AppColors.secText,
@@ -86,7 +88,7 @@ class AddressCard extends StatelessWidget {
             ),
           );
         }
-        return SliverToBoxAdapter();
+        return const SliverToBoxAdapter();
       },
     );
   }

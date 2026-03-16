@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:think_and_wash/core/custom_button.dart';
 import 'package:think_and_wash/core/snack_bar_messages.dart';
 import 'package:think_and_wash/features/profile/domain/profile_entity.dart';
 import 'package:think_and_wash/features/profile/presentation/bloc/profile_bloc.dart';
 
 import '../../../core/app_colors.dart';
-
-import '../../../core/custom_drop_down.dart';
-import '../../../core/custom_input_fields.dart';
-import '../../../core/custom_tool_tip.dart';
 import '../../auth/data/auth_model.dart';
 import '../../auth/presentation/bloc/auth_bloc.dart';
+import 'widgets/profile_action_buttons.dart';
+import 'widgets/profile_address_info.dart';
+import 'widgets/profile_personal_info.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -21,10 +19,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  sectionTitle(BuildContext context, String title) {
-    return Text(title, style: Theme.of(context).textTheme.titleMedium);
-  }
-
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController firstName = TextEditingController();
@@ -33,12 +27,35 @@ class _ProfileState extends State<Profile> {
   final TextEditingController address = TextEditingController();
   final TextEditingController landmark = TextEditingController();
   final TextEditingController pincode = TextEditingController();
+  final ValueNotifier<String?> genderNotifier = ValueNotifier(null);
 
-  String? gender;
   bool isEditMode = false;
   bool isFirstTimeUser = false;
-  void initializeUser(User user) {
-    debugPrint("inside initilizeUser function ");
+
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialUser();
+  }
+
+  /// Loads user data on first launch or persistent login.
+  void _loadInitialUser() {
+    // 1. Check if ProfileBloc already has the user data (e.g. from HomeScreen init)
+    final profileState = context.read<ProfileBloc>().state;
+    if (profileState is ProfileUpdateSuccessState) {
+      _initializeUser(profileState.usr);
+      return;
+    }
+
+    // 2. Fallback to AuthBloc for first-time login flow
+    final authState = context.read<AuthBloc>().state;
+    if (authState is OtpValidationSuccess) {
+      _initializeUser(authState.userMOdel);
+    }
+  }
+
+  /// Populates all form fields from a [User] object.
+  void _initializeUser(User user) {
     final parts = user.name?.split(" ") ?? [];
 
     firstName.text = parts.isNotEmpty ? parts.first : "";
@@ -49,7 +66,7 @@ class _ProfileState extends State<Profile> {
     landmark.text = user.landmark ?? "";
     pincode.text = user.pincode ?? "";
 
-    gender =
+    genderNotifier.value =
         user.gender != null
             ? user.gender![0].toUpperCase() + user.gender!.substring(1)
             : null;
@@ -61,35 +78,37 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void dispose() {
+    firstName.dispose();
+    lastName.dispose();
+    email.dispose();
+    address.dispose();
+    landmark.dispose();
+    pincode.dispose();
+    genderNotifier.dispose();
+    super.dispose();
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
-        if (state is ProfileInitial) {
-          final authState = context.read<AuthBloc>().state;
-
-          if (authState is OtpValidationSuccess) {
-            final user = authState.userMOdel;
-            debugPrint("user: $user");
-
-            if (user != null) {
-              initializeUser(user);
-            }
-          }
-        }
         if (state is ProfileUpdateSuccessState) {
-          debugPrint("ProfileUpdate success State");
-
-          initializeUser(state.usr);
+          _initializeUser(state.usr);
           setState(() {
             isEditMode = false;
           });
-          context.read<AuthBloc>().add(UpdateUser(user: state.usr));
-
-          SnackbarService.success("Successfully profile updated");
+          SnackbarService.success("Successfully updated profile");
         }
 
         if (state is ProfileUpdateFailureState) {
-          SnackbarService.error("Failled to update profile");
+          SnackbarService.error(state.msg);
+        }
+
+        if (state is ProfileUpdateServerFailureState) {
+          SnackbarService.error(state.msg);
         }
       },
       child: Scaffold(
@@ -101,185 +120,118 @@ class _ProfileState extends State<Profile> {
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// PERSONAL INFO
-                        sectionTitle(context, "Personal Information"),
+            if (state is ProfileLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                        const SizedBox(height: 15),
+            if (state is ProfileUpdateFailureState) {
+              return _errorView(context, state.msg);
+            }
 
-                        CustomInputField(
-                          controller: firstName,
-                          hint: "First Name",
-                          enabled: isEditMode,
+            if (state is ProfileUpdateServerFailureState) {
+              return _errorView(context, state.msg);
+            }
 
-                          validator:
-                              (value) =>
-                                  value!.isEmpty ? "Enter first name" : null,
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomInputField(
-                          controller: lastName,
-                          hint: "Last Name",
-                          enabled: isEditMode,
-                          validator:
-                              (value) =>
-                                  value!.isEmpty ? "Enter last name" : null,
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomInputField(
-                          controller: email,
-                          hint: "Email",
-                          enabled: isEditMode,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value!.isEmpty) return "Enter email";
-                            if (!value.contains("@"))
-                              return "Enter valid email";
-                            return null;
-                          },
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomDropdownField(
-                          value: gender,
-                          hint: "Select Gender",
-
-                          items: const ["Male", "Female"],
-                          onChanged: (val) => setState(() => gender = val),
-                        ),
-
-                        const SizedBox(height: 30),
-
-                        /// ADDRESS SECTION
-                        Row(
-                          children: [
-                            sectionTitle(context, "Address"),
-                            const SizedBox(width: 6),
-                            const CustomInfoTooltip(
-                              message:
-                                  "This address will be used as pickup and delivery address.",
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomInputField(
-                          controller: address,
-                          enabled: isEditMode,
-                          hint: "Full Address (max 20 words)",
-                          //maxLines: 3,
-                          validator: (value) {
-                            if (value!.isEmpty) return "Enter address";
-                            if (value.split(" ").length > 10) {
-                              return "Maximum 10 words allowed";
-                            }
-                            return null;
-                          },
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomInputField(
-                          controller: landmark,
-                          enabled: isEditMode,
-                          hint: "Nearby / Landmark",
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        CustomInputField(
-                          controller: pincode,
-                          enabled: isEditMode,
-                          hint: "Pincode",
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.length != 6) {
-                              return "Pincode must be exactly 6 digits";
-                            }
-                            return null;
-                          },
-                        ),
-
-                        const SizedBox(height: 40),
-                      ],
-                    ),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (isEditMode)
-                      CustomButton(
-                        onpressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<ProfileBloc>().add(
-                              ProfileUpdateRequestedEvent(
-                                entity: ProfileEntity(
-                                  name: "${firstName.text} ${lastName.text}",
-                                  email: email.text,
-                                  gender: gender!.toLowerCase(),
-                                  fullAddress: address.text,
-                                  landmark: landmark.text,
-                                  pincode: pincode.text,
-                                ),
-                              ),
-                            );
-                            debugPrint("Profile Updated");
-                          }
-                        },
-                        btnTitle: "Update Profile ",
-                      ),
-                  ],
-                ),
-              ],
-            );
+            // ProfileInitial and ProfileUpdateSuccessState both show the form
+            return _bodyView(context);
           },
         ),
-
-        floatingActionButton:
-            !isEditMode
-                ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(17)),
-                    border: Border.all(color: AppColors.seedColor),
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: -1,
-                        blurRadius: 10,
-                        offset: Offset(3, 5),
-                        color: AppColors.boxShadowPink,
-                      ),
-                    ],
-                  ),
-                  child: FloatingActionButton(
-                    backgroundColor: AppColors.background,
-
-                    elevation: 0,
-
-                    onPressed: () {
-                      setState(() {
-                        isEditMode = true;
-                      });
-                    },
-                    child: const Icon(Icons.edit, color: AppColors.button),
-                  ),
-                )
-                : null,
       ),
+    );
+  }
+
+  /// Displays an error message with a retry button.
+  Widget _errorView(BuildContext context, String message) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.error_outline, size: 48, color: Colors.redAccent),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () {
+                context.read<ProfileBloc>().add(GetProfileEvent());
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text("Retry"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _bodyView(BuildContext context) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ProfilePersonalInfo(
+                  firstNameController: firstName,
+                  lastNameController: lastName,
+                  emailController: email,
+                  genderNotifier: genderNotifier,
+                  isEditMode: isEditMode,
+                ),
+                const SizedBox(height: 30),
+                ProfileAddressInfo(
+                  addressController: address,
+                  landmarkController: landmark,
+                  pincodeController: pincode,
+                  isEditMode: isEditMode,
+                ),
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ProfileActionButtons(
+              isEditMode: isEditMode,
+              onEditPressed: () {
+                setState(() {
+                  isEditMode = true;
+                });
+              },
+              onUpdatePressed: () {
+                if (genderNotifier.value == null) {
+                  SnackbarService.error("Please select a gender");
+                  return;
+                }
+                if (_formKey.currentState!.validate()) {
+                  context.read<ProfileBloc>().add(
+                    ProfileUpdateRequestedEvent(
+                      entity: ProfileEntity(
+                        name: "${firstName.text} ${lastName.text}",
+                        email: email.text,
+                        gender: genderNotifier.value!.toLowerCase(),
+                        fullAddress: address.text,
+                        landmark: landmark.text,
+                        pincode: pincode.text,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

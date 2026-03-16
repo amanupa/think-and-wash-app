@@ -21,7 +21,7 @@ class Cart extends StatelessWidget {
       ],
       child:
           istab
-              ? CartBody()
+              ? const CartBody()
               : Scaffold(
                 appBar: AppBar(
                   backgroundColor: AppColors.background,
@@ -31,7 +31,7 @@ class Cart extends StatelessWidget {
                   ),
                   centerTitle: true,
                 ),
-                body: CartBody(),
+                body: const CartBody(),
               ),
     );
   }

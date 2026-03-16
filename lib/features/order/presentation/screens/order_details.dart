@@ -44,9 +44,9 @@ class OrderDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Booked",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.button,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -195,7 +195,7 @@ class _SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border(
+        border: const Border(
           top: BorderSide(color: AppColors.seedColor),
           left: BorderSide(color: AppColors.seedColor),
           bottom: BorderSide(color: AppColors.seedColor),

@@ -18,19 +18,20 @@ class Login extends StatelessWidget {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is OtpRequestedFailure) {
-            SnackbarService.error("Otp request fail, Try again...");
+            SnackbarService.error(state.msg);
           }
           if (state is OtpValidationFailure) {
-            SnackbarService.error(
-              "Otp validation fail wrong otp, Try again...",
-            );
+            SnackbarService.error(state.msg);
           }
-          if (state is OtpValidationSuccess) {
+          if (state is OtpValidationSuccess || state is StaticOtpValidationSuccess) {
             Navigator.of(context).pushNamed(AppRoutes.home);
           }
         },
         builder: (context, state) {
-          if (state is OtpRequestedSuccess || state is OtpValidationFailure) {
+          if (state is OtpRequestedSuccess ||
+              state is OtpValidationFailure ||
+              state is OtpValidationLoading ||
+              state is StaticOtpValidationSuccess) {
             return OtpTextFieldForm(
               formController: otpController,
               page: "Submit Otp",
@@ -47,6 +48,8 @@ class Login extends StatelessWidget {
                               ? state.phn
                               : state is OtpValidationFailure
                               ? state.phn
+                              : state is OtpValidationLoading
+                              ? "" // Not reachable since button is disabled
                               : "",
                       role: "customer",
                     ),
@@ -73,7 +76,7 @@ class Login extends StatelessWidget {
               },
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

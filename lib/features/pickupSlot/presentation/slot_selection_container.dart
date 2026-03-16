@@ -37,7 +37,7 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.boxShadowPink,
             blurRadius: 10,
@@ -85,6 +85,14 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
                   ),
                 );
               }
+              if (state is UserEmptySlotsState) {
+                return Center(
+                  child: Text(
+                    "No booking slots available of selected date",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                );
+              }
 
               return const SizedBox.shrink();
             },
@@ -107,6 +115,8 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
     final formatted = _formatDate(picked);
 
     setState(() => _selectedDate = formatted);
+
+    if (!mounted) return;
 
     context.read<PickUpSlotBloc>().add(
       LoadUserSlots(PickupSlotEntity(date: formatted, vId: widget.vendorId)),

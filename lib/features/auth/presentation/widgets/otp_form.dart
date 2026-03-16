@@ -28,7 +28,7 @@ class OtpTextFieldForm extends StatelessWidget {
           height: 450,
           width: 380,
 
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20),
@@ -71,11 +71,11 @@ class OtpTextFieldForm extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                       // width: 250,
                       height: 45,
                       decoration: BoxDecoration(
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             blurRadius: 10,
                             spreadRadius: -10,
@@ -115,7 +115,7 @@ class OtpTextFieldForm extends StatelessWidget {
                             hintText: hintText,
                             hintStyle: Theme.of(context).textTheme.bodyMedium,
                             border: InputBorder.none,
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.phone,
                               color: AppColors.primary,
                             ),
@@ -146,7 +146,7 @@ class OtpTextFieldForm extends StatelessWidget {
                                 },
                         child:
                             isLoading
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : Text(buttonText),
                       ),
                     ),

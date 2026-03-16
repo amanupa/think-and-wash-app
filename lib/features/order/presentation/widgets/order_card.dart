@@ -15,13 +15,13 @@ class OrderCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        border: Border(
+        border: const Border(
           top: BorderSide(color: AppColors.seedColor),
           left: BorderSide(color: AppColors.seedColor),
         ),
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 10,
             spreadRadius: -5,

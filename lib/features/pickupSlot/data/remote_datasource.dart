@@ -24,6 +24,8 @@ class PickUpSlotRemoteDataSourceImpl extends PickUpSlotRemoteDataSource {
         return pickupSlotModelFromJson(response.body);
       }
       throw ApiException(message: response.body);
+    } on ApiException {
+      rethrow;
     } catch (err) {
       throw ServerException();
     }

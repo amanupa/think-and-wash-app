@@ -26,3 +26,8 @@ class UserSlotError extends PickUpSlotState {
   @override
   List<Object> get props => [message];
 }
+
+class UserEmptySlotsState extends PickUpSlotState {
+  @override
+  List<Object?> get props => [];
+}

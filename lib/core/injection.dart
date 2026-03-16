@@ -1,4 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:think_and_wash/features/categories/data/datasource/remote/categories_remote_data_source.dart';
+import 'package:think_and_wash/features/categories/data/repository_impl/categories_repository_impl.dart';
+import 'package:think_and_wash/features/categories/domain/repository/categories_repository.dart';
+import 'package:think_and_wash/features/categories/domain/usecase/get_categories_usecase.dart';
+import 'package:think_and_wash/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:think_and_wash/core/api_clients.dart';
 import 'package:think_and_wash/features/auth/data/auth_datasource.dart';
 import 'package:think_and_wash/features/auth/data/auth_repository_impl.dart';
@@ -22,7 +27,7 @@ import 'package:think_and_wash/features/profile/domain/profile_usecase.dart';
 
 final sl = GetIt.instance;
 
-Future<void> init() async {
+void init() {
   _core();
   _dataSources();
   _repositories();
@@ -44,6 +49,9 @@ void _dataSources() {
   sl.registerLazySingleton<OrderRemoteDataSource>(
     () => OrderRemoteDataSourceImpl(),
   );
+  sl.registerLazySingleton<CategoriesRemoteDataSource>(
+    () => CategoriesRemoteDataSourceImpl(),
+  );
 }
 
 void _repositories() {
@@ -59,6 +67,9 @@ void _repositories() {
   sl.registerLazySingleton<OrderRepository>(
     () => OrderRepositoryImpl(dataSource: sl()),
   );
+  sl.registerLazySingleton<CategoriesRepository>(
+    () => CategoriesRepositoryImpl(remoteDataSource: sl()),
+  );
 }
 
 void _useCases() {
@@ -69,4 +80,8 @@ void _useCases() {
   sl.registerLazySingleton(() => GetOrderUsecase(repository: sl()));
   sl.registerLazySingleton(() => CreateOrderUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetProfileUsecase(repository: sl()));
+  sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+  
+  // Blocs
+  sl.registerFactory(() => CategoriesBloc(getCategoriesUseCase: sl()));
 }

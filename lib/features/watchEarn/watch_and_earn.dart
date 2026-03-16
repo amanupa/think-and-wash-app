@@ -67,7 +67,7 @@ class _WatchAndEarnState extends State<WatchAndEarn> {
             border: Border.all(color: AppColors.seedColor),
             color: AppColors.background,
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 10,
                 spreadRadius: -2,

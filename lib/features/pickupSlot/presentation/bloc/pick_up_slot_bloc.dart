@@ -33,7 +33,7 @@ class PickUpSlotBloc extends Bloc<PickUpSlotEvent, PickUpSlotState> {
         },
         (success) {
           if (success.data.isEmpty) {
-            emit(UserSlotLoaded(_generateStaticSlots()));
+            emit(UserEmptySlotsState());
           } else {
             emit(UserSlotLoaded(success.data));
           }

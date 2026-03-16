@@ -12,16 +12,6 @@ final class ProfileUpdateRequestedEvent extends ProfileEvent {
   List<Object?> get props => [entity];
 }
 
-class MakeProfileEditViewEvent extends ProfileEvent {
-  @override
-  List<Object?> get props => [];
-}
-
-class EnableProfileEditEvent extends ProfileEvent {
-  @override
-  List<Object?> get props => [];
-}
-
 class GetProfileEvent extends ProfileEvent {
   @override
   List<Object?> get props => [];

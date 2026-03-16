@@ -21,7 +21,7 @@ class OrderRepositoryImpl extends OrderRepository {
     } on ApiException catch (err) {
       return left(ApiFailure(message: err.message));
     } on ServerException {
-      return left(ServerFailure());
+      return left(const ServerFailure());
     }
   }
 
@@ -33,7 +33,7 @@ class OrderRepositoryImpl extends OrderRepository {
     } on ApiException catch (err) {
       return left(ApiFailure(message: err.message));
     } on ServerException {
-      return left(ServerFailure());
+      return left(const ServerFailure());
     }
   }
 }

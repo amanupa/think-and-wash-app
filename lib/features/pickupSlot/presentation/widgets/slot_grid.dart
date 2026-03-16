@@ -48,7 +48,7 @@ class SlotGrid extends StatelessWidget {
                 boxShadow:
                     isSelected
                         ? [
-                          BoxShadow(
+                          const BoxShadow(
                             color: AppColors.boxShadowPink,
                             blurRadius: 5,
                             spreadRadius: 2,

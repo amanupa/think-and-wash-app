@@ -22,7 +22,7 @@ class AuthRepositoryImpl extends AuthRepository {
     } on ApiException catch (err) {
       return left(ApiFailure(message: err.message));
     } on ServerException {
-      return left(ServerFailure());
+      return left(const ServerFailure());
     }
   }
 
@@ -39,12 +39,20 @@ class AuthRepositoryImpl extends AuthRepository {
           value: result.token!,
         );
         await SharedPreferenceService.setBool("isLoggedIn", true);
+        if (result.user?.name != null && result.user!.name!.isNotEmpty) {
+          await SharedPreferenceService.setString(
+            "userName",
+            result.user!.name!,
+          );
+        } else {
+          await SharedPreferenceService.remove("userName");
+        }
       }
       return right(result);
     } on ApiException catch (err) {
       return left(ApiFailure(message: err.message));
     } on ServerException {
-      return left(ServerFailure());
+      return left(const ServerFailure());
     }
   }
 }

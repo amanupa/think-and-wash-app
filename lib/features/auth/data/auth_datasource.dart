@@ -29,9 +29,21 @@ class AuthDataSourceImpl extends AuthDatasource {
         );
         return response.body;
       }
-      throw ApiException(
-        message: "Api error with status code: ${response.statusCode}",
-      );
+      
+      // Parse backend error message
+      String errorMsg = "Api error with status code: ${response.statusCode}";
+      try {
+        final decoded = jsonDecode(response.body);
+        if (decoded['message'] != null) {
+          errorMsg = decoded['message'];
+        } else if (decoded['error'] != null) {
+          errorMsg = decoded['error'];
+        }
+      } catch (_) {}
+
+      throw ApiException(message: errorMsg);
+    } on ApiException {
+      rethrow;
     } catch (err) {
       throw ServerException();
     }
@@ -53,9 +65,21 @@ class AuthDataSourceImpl extends AuthDatasource {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return authModelFromJson(response.body);
       }
-      throw ApiException(
-        message: "Api error with status code: ${response.statusCode}",
-      );
+      
+      // Parse backend error message
+      String errorMsg = "Api error with status code: ${response.statusCode}";
+      try {
+        final decoded = jsonDecode(response.body);
+        if (decoded['message'] != null) {
+          errorMsg = decoded['message'];
+        } else if (decoded['error'] != null) {
+          errorMsg = decoded['error'];
+        }
+      } catch (_) {}
+
+      throw ApiException(message: errorMsg);
+    } on ApiException {
+      rethrow;
     } catch (err) {
       debugPrint("inside catch bloc with err: $err");
       throw ServerException();

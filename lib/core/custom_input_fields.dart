@@ -26,11 +26,11 @@ class CustomInputField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: AppColors.background,
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 5,
             spreadRadius: -5,
-            offset: const Offset(3, 5),
+            offset: Offset(3, 5),
             color: AppColors.boxShadowPink,
           ),
         ],

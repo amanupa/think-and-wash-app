@@ -8,7 +8,7 @@ final class ProfileInitial extends ProfileState {
   List<Object?> get props => [];
 }
 
-final class ProfileLoadingStat extends ProfileState {
+final class ProfileLoadingState extends ProfileState {
   @override
   List<Object?> get props => [];
 }

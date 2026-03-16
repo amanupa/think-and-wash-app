@@ -1,6 +1,6 @@
-import 'dart:convert';
+import 'package:equatable/equatable.dart';
 
-class ProfileEntity {
+class ProfileEntity extends Equatable {
   final String name;
   final String email;
   final String gender;
@@ -8,7 +8,7 @@ class ProfileEntity {
   final String landmark;
   final String pincode;
 
-  ProfileEntity({
+  const ProfileEntity({
     required this.name,
     required this.email,
     required this.gender,
@@ -16,13 +16,7 @@ class ProfileEntity {
     required this.landmark,
     required this.pincode,
   });
-  String authModelToJson(ProfileEntity entity) => json.encode(entity.toJson());
-  Map<String, dynamic> toJson() => {
-    "name": name,
-    "email": email,
-    "gender": gender,
-    "address": fullAddress,
-    "landmark": landmark,
-    "pincode": pincode,
-  };
+
+  @override
+  List<Object?> get props => [name, email, gender, fullAddress, landmark, pincode];
 }

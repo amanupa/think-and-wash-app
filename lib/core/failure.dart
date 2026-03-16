@@ -35,36 +35,27 @@ class ApiFailure extends Failure {
 }
 
 class FirbaseMyFailure extends Failure {
-  @override
-  final String message;
-
-  const FirbaseMyFailure({required this.message});
+  const FirbaseMyFailure({required super.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
 
 class DatabaseFailure extends Failure {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NormalFailure extends Failure {
-  @override
-  final String message;
-
-  const NormalFailure({required this.message});
+  const NormalFailure({required super.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
 
 class ValidationFailure extends Failure {
-  @override
-  final String message;
-
-  const ValidationFailure({required this.message});
+  const ValidationFailure({required super.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

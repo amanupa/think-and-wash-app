@@ -90,7 +90,7 @@ class HelpAndSupport extends StatelessWidget {
       leading: Container(
         height: 30,
         width: 30,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.background,
           boxShadow: [
             BoxShadow(

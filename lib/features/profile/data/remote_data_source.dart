@@ -13,28 +13,37 @@ abstract class ProfileRemoteDataSource {
 
 class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
   ProfileRemoteDataSourceImpl();
+
+  /// Converts a [ProfileEntity] to a JSON map for the API request.
+  Map<String, dynamic> _entityToJson(ProfileEntity entity) => {
+    "name": entity.name,
+    "email": entity.email,
+    "gender": entity.gender,
+    "address": entity.fullAddress,
+    "landmark": entity.landmark,
+    "pincode": entity.pincode,
+  };
+
   @override
   Future<User> updateProfile(ProfileEntity entity) async {
     try {
       final url = AppUrl.host + AppUrl.updateProfile;
 
-      final response = await ApiClient.post(url: url, body: entity.toJson());
-      debugPrint(
-        "this is the respose status code in update profile: ${response.statusCode}",
+      final response = await ApiClient.post(
+        url: url,
+        body: _entityToJson(entity),
       );
 
       if (response.statusCode == 200) {
-        debugPrint("update profile response body: ${response.body}");
-
         final decoded = jsonDecode(response.body);
-
         final user = User.fromJson(decoded["data"]);
-        debugPrint("before returning in update profile: ${user.email}");
-
         return user;
       }
       throw ApiException(message: response.body);
+    } on ApiException {
+      rethrow;
     } catch (err) {
+      debugPrint("updateProfile error: $err");
       throw ServerException();
     }
   }
@@ -45,22 +54,17 @@ class ProfileRemoteDataSourceImpl extends ProfileRemoteDataSource {
       final url = AppUrl.host + AppUrl.getProfile;
 
       final response = await ApiClient.post(url: url);
-      debugPrint(
-        "this is the respose status code in get profile: ${response.statusCode}",
-      );
 
       if (response.statusCode == 200) {
-        debugPrint("get profile response body: ${response.body}");
-
         final decoded = jsonDecode(response.body);
-
         final user = User.fromJson(decoded["data"]);
-        debugPrint("before returning in get profile: ${user.email}");
-
         return user;
       }
       throw ApiException(message: response.body);
+    } on ApiException {
+      rethrow;
     } catch (err) {
+      debugPrint("getProfile error: $err");
       throw ServerException();
     }
   }

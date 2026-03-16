@@ -19,7 +19,7 @@ class OrderScreen extends StatelessWidget {
       create:
           (_) =>
               OrderBloc(getOrderUsecase: di.sl(), createOrderUsecase: di.sl())
-                ..add(GetOrdersEvent()),
+                ..add(const GetOrdersEvent()),
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -35,7 +35,7 @@ class OrderScreen extends StatelessWidget {
               Container(
                 height: 40,
                 width: 40,
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
 
                 /* decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -60,7 +60,7 @@ class OrderScreen extends StatelessWidget {
             bottom: TabBar(
               labelStyle: Theme.of(context).textTheme.bodyMedium,
               indicatorColor: AppColors.primary,
-              tabs: [
+              tabs: const [
                 Tab(text: "PickUp"),
                 Tab(text: "Delivey"),
                 Tab(text: "Delivered"),
@@ -68,7 +68,7 @@ class OrderScreen extends StatelessWidget {
             ),
           ),
 
-          body: TabBarView(children: [Pickup(), Delivery(), Delivered()]),
+          body: const TabBarView(children: [Pickup(), Delivery(), Delivered()]),
         ),
       ),
     );

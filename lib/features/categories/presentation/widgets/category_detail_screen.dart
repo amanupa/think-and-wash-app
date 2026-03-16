@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:think_and_wash/core/app_colors.dart';
-import 'package:think_and_wash/features/categories/data/datasource/local/wash_iron_data_source.dart';
+import 'package:think_and_wash/core/custom_circular_button.dart';
+import 'package:think_and_wash/features/categories/data/model/category_model.dart';
 import 'package:think_and_wash/features/categories/presentation/widgets/sliver_cart_item_list.dart';
+import 'package:think_and_wash/route/app_routes.dart';
 
-import '../../../../core/custom_circular_button.dart';
-import '../../../../route/app_routes.dart';
+class CategoryDetailScreen extends StatelessWidget {
+  final String title;
+  final List<Item> items;
 
-class Shoes extends StatelessWidget {
-  const Shoes({super.key});
+  const CategoryDetailScreen({
+    super.key,
+    required this.title,
+    required this.items,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +24,12 @@ class Shoes extends StatelessWidget {
             slivers: [
               SliverAppBar(
                 backgroundColor: AppColors.background,
-                title: Text("Shoes Cleaning"),
+                title: Text(title),
                 centerTitle: true,
                 pinned: true,
               ),
-              SliverCartItemList(
-                items: CategoryProductItems.shoesItems,
-                iscartbutton: true,
-              ),
+              SliverCartItemList(items: items, iscartbutton: true),
+              const SliverToBoxAdapter(child: SizedBox(height: 100)),
             ],
           ),
           CustomCircularButton(

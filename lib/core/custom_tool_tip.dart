@@ -51,11 +51,11 @@ class _CustomInfoTooltipState extends State<CustomInfoTooltip> {
         maxWidth: MediaQuery.of(context).size.width * 1,
       ),
 
-      boxShadows: [
+      boxShadows: const [
         BoxShadow(
           color: AppColors.boxShadowPink,
           blurRadius: 12,
-          offset: const Offset(0, 6),
+          offset: Offset(0, 6),
         ),
       ],
 

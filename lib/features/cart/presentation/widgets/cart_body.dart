@@ -33,7 +33,7 @@ class CartBody extends StatelessWidget {
 
                       return ListTile(
                         leading: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.background,
                             boxShadow: [
                               BoxShadow(
@@ -63,9 +63,9 @@ class CartBody extends StatelessWidget {
                   ),
 
                   const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                  SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8),
                       child: SlotSelectionSection(
                         vendorId: "69ae5cc549a2b6ad583acc8a",
                       ),
@@ -73,7 +73,7 @@ class CartBody extends StatelessWidget {
                   ),
 
                   //Address card
-                  AddressCard(),
+                  const AddressCard(),
 
                   //summary card
                   SliverToBoxAdapter(
@@ -87,13 +87,18 @@ class CartBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SliverToBoxAdapter(child: SizedBox(height: 80)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 80)),
                 ],
               ),
 
-              CustomButton(
-                onpressed: () {},
-                btnTitle: "Pay ₹ ${total.toStringAsFixed(0)}",
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CustomButton(
+                    onpressed: () {},
+                    btnTitle: "Pay ₹ ${total.toStringAsFixed(0)}",
+                  ),
+                ],
               ),
             ],
           );
@@ -104,7 +109,7 @@ class CartBody extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("assets/emptyCart.png"),
+              Image.asset("assets/emptyCart.png", cacheWidth: 600),
               const SizedBox(height: 10),
               const Text("Cart is empty, Add item to wash..."),
             ],

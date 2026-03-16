@@ -7,15 +7,22 @@ import 'package:think_and_wash/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:think_and_wash/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:think_and_wash/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:think_and_wash/features/trackOrder/bloc/track_order_bloc.dart';
+import 'package:think_and_wash/features/categories/presentation/bloc/categories_bloc.dart';
 
 import 'package:think_and_wash/my_app.dart';
 
-void main(List<String> args) async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await di.init();
-  await MobileAds.instance.initialize();
+
+  // DI registration is purely synchronous (all lazy singletons) — no await needed.
+  di.init();
+
+  // SharedPreferences must complete before we can read isLoggedIn.
   await SharedPreferenceService.init();
-  bool isLoggedIn = SharedPreferenceService.getBool("isLoggedIn");
+
+  final bool isLoggedIn = SharedPreferenceService.getBool("isLoggedIn");
+
+  // Show UI immediately — don't block on ads SDK.
   runApp(
     MultiBlocProvider(
       providers: [
@@ -33,8 +40,13 @@ void main(List<String> args) async {
                 getProfileUsecase: di.sl(),
               ),
         ),
+        BlocProvider(create: (_) => di.sl<CategoriesBloc>()),
       ],
       child: MyApp(isLogedIn: isLoggedIn),
     ),
   );
+
+  // Initialize ads after the first frame is rendered.
+  // This avoids blocking the startup for 2-5+ seconds on real devices.
+  MobileAds.instance.initialize();
 }

@@ -26,17 +26,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ProfileUpdateRequestedEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(ProfileLoadingStat());
+    emit(ProfileLoadingState());
     try {
-      debugPrint(
-        "this is the entity data to update profile: ${event.entity.email},${event.entity.name},${event.entity.gender},${event.entity.fullAddress},${event.entity.landmark},${event.entity.pincode}",
-      );
       final result = await profileUsecase(event.entity);
       result.fold(
         (failure) {
           emit(
             ProfileUpdateFailureState(
-              msg: failure.message ?? "Failled to update profile",
+              msg: failure.message ?? "Failed to update profile",
             ),
           );
         },
@@ -45,7 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         },
       );
     } catch (err) {
-      emit(ProfileUpdateServerFailureState(msg: "Server failure "));
+      emit(ProfileUpdateServerFailureState(msg: "Server failure"));
     }
   }
 
@@ -53,10 +50,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     GetProfileEvent event,
     Emitter<ProfileState> emit,
   ) async {
-    emit(ProfileLoadingStat());
+    emit(ProfileLoadingState());
     try {
       final result = await getProfileUsecase(NoParams());
-      debugPrint("get profile result: $result");
       result.fold(
         (failure) {
           emit(
@@ -70,8 +66,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         },
       );
     } catch (err) {
-      debugPrint("get profile catch block");
-      emit(ProfileUpdateServerFailureState(msg: "Its not you its us"));
+      emit(ProfileUpdateServerFailureState(msg: "Something went wrong"));
     }
   }
 }

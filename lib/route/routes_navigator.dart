@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:think_and_wash/features/auth/presentation/screen/login.dart';
 import 'package:think_and_wash/features/cart/presentation/cart.dart';
-import 'package:think_and_wash/features/categories/presentation/widgets/bags.dart';
-import 'package:think_and_wash/features/categories/presentation/widgets/dry_clean.dart';
-import 'package:think_and_wash/features/categories/presentation/widgets/home_bounds.dart';
-import 'package:think_and_wash/features/categories/presentation/widgets/premium.dart';
-import 'package:think_and_wash/features/categories/presentation/widgets/shoes.dart';
+import 'package:think_and_wash/features/categories/presentation/widgets/category_detail_screen.dart';
 import 'package:think_and_wash/features/helpSupport/help_and_support.dart';
 import 'package:think_and_wash/features/home/presentation/home_screen.dart';
 import 'package:think_and_wash/features/order/data/model/order.dart';
@@ -15,6 +11,7 @@ import 'package:think_and_wash/features/privacyPolicy/privay_policy.dart';
 import 'package:think_and_wash/features/profile/presentation/profile.dart';
 
 import 'package:think_and_wash/features/watchEarn/watch_and_earn.dart';
+import 'package:think_and_wash/features/categories/data/model/category_model.dart' as cat_model;
 
 import 'package:think_and_wash/route/app_routes.dart';
 import 'package:think_and_wash/splash_screen.dart';
@@ -24,7 +21,7 @@ class RoutesNavigator {
     switch (settings.name) {
       case AppRoutes.entry:
         return MaterialPageRoute(
-          builder: (context) => SplashScreen(),
+          builder: (context) => const SplashScreen(),
           settings: settings,
         );
       case AppRoutes.login:
@@ -34,62 +31,77 @@ class RoutesNavigator {
         );
       case AppRoutes.home:
         return MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => const HomeScreen(),
           settings: settings,
         );
       case AppRoutes.privacyNpolicy:
         return MaterialPageRoute(
-          builder: (context) => PrivayPolicy(),
+          builder: (context) => const PrivayPolicy(),
           settings: settings,
         );
       case AppRoutes.helpNsupport:
         return MaterialPageRoute(
-          builder: (context) => HelpAndSupport(),
+          builder: (context) => const HelpAndSupport(),
           settings: settings,
         );
       case AppRoutes.watchNearn:
         return MaterialPageRoute(
-          builder: (context) => WatchAndEarn(),
+          builder: (context) => const WatchAndEarn(),
           settings: settings,
         );
       case AppRoutes.trackOrder:
         return MaterialPageRoute(
-          builder: (context) => OrderScreen(),
+          builder: (context) => const OrderScreen(),
           settings: settings,
         );
       case AppRoutes.profile:
         return MaterialPageRoute(
-          builder: (context) => Profile(),
+          builder: (context) => const Profile(),
           settings: settings,
         );
       case AppRoutes.dryClean:
         return MaterialPageRoute(
-          builder: (context) => DryClean(),
+          builder: (context) => CategoryDetailScreen(
+            title: "Dry Cleaning",
+            items: settings.arguments as List<cat_model.Item>? ?? [],
+          ),
           settings: settings,
         );
       case AppRoutes.premium:
         return MaterialPageRoute(
-          builder: (context) => Premium(),
+          builder: (context) => CategoryDetailScreen(
+            title: "Premium Cleaning",
+            items: settings.arguments as List<cat_model.Item>? ?? [],
+          ),
           settings: settings,
         );
       case AppRoutes.homebounds:
         return MaterialPageRoute(
-          builder: (context) => HomeBounds(),
+          builder: (context) => CategoryDetailScreen(
+            title: "Home Bounds",
+            items: settings.arguments as List<cat_model.Item>? ?? [],
+          ),
           settings: settings,
         );
       case AppRoutes.shoes:
         return MaterialPageRoute(
-          builder: (context) => Shoes(),
+          builder: (context) => CategoryDetailScreen(
+            title: "Shoes Cleaning",
+            items: settings.arguments as List<cat_model.Item>? ?? [],
+          ),
           settings: settings,
         );
       case AppRoutes.bags:
         return MaterialPageRoute(
-          builder: (context) => Bags(),
+          builder: (context) => CategoryDetailScreen(
+            title: "Bag Cleaning",
+            items: settings.arguments as List<cat_model.Item>? ?? [],
+          ),
           settings: settings,
         );
       case AppRoutes.cart:
         return MaterialPageRoute(
-          builder: (context) => Cart(istab: false),
+          builder: (context) => const Cart(istab: false),
           settings: settings,
         );
       case AppRoutes.orderDetails:

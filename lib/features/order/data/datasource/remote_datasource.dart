@@ -24,6 +24,8 @@ class OrderRemoteDataSourceImpl extends OrderRemoteDataSource {
         return orderModelFromJson(response.body);
       }
       throw ApiException(message: response.body);
+    } on ApiException {
+      rethrow;
     } catch (err) {
       throw ServerException();
     }
@@ -42,6 +44,8 @@ class OrderRemoteDataSourceImpl extends OrderRemoteDataSource {
         return orderModelFromJson(response.body);
       }
       throw ApiException(message: response.body);
+    } on ApiException {
+      rethrow;
     } catch (err) {
       throw ServerException();
     }
