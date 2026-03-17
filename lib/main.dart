@@ -13,16 +13,9 @@ import 'package:think_and_wash/my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // DI registration is purely synchronous (all lazy singletons) — no await needed.
   di.init();
-
-  // SharedPreferences must complete before we can read isLoggedIn.
   await SharedPreferenceService.init();
-
   final bool isLoggedIn = SharedPreferenceService.getBool("isLoggedIn");
-
-  // Show UI immediately — don't block on ads SDK.
   runApp(
     MultiBlocProvider(
       providers: [
@@ -45,8 +38,5 @@ void main() async {
       child: MyApp(isLogedIn: isLoggedIn),
     ),
   );
-
-  // Initialize ads after the first frame is rendered.
-  // This avoids blocking the startup for 2-5+ seconds on real devices.
   MobileAds.instance.initialize();
 }

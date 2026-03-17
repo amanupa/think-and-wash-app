@@ -15,6 +15,7 @@ import 'package:think_and_wash/features/order/data/order_repository_impl.dart';
 import 'package:think_and_wash/features/order/domain/order_repository.dart';
 import 'package:think_and_wash/features/order/domain/usecase/create_order_usecase.dart';
 import 'package:think_and_wash/features/order/domain/usecase/get_order_usecase.dart';
+import 'package:think_and_wash/features/order/presentation/bloc/orders_bloc.dart';
 import 'package:think_and_wash/features/pickupSlot/data/pickup_slot_repository_impl.dart';
 import 'package:think_and_wash/features/pickupSlot/data/remote_datasource.dart';
 import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_repository.dart';
@@ -81,7 +82,10 @@ void _useCases() {
   sl.registerLazySingleton(() => CreateOrderUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetProfileUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
-  
+
   // Blocs
   sl.registerFactory(() => CategoriesBloc(getCategoriesUseCase: sl()));
+  sl.registerFactory(
+    () => OrderBloc(createOrderUsecase: sl(), getOrderUsecase: sl()),
+  );
 }

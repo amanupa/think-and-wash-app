@@ -37,17 +37,14 @@ class _ProfileState extends State<Profile> {
     super.initState();
     _loadInitialUser();
   }
-
-  /// Loads user data on first launch or persistent login.
+  
   void _loadInitialUser() {
-    // 1. Check if ProfileBloc already has the user data (e.g. from HomeScreen init)
     final profileState = context.read<ProfileBloc>().state;
     if (profileState is ProfileUpdateSuccessState) {
       _initializeUser(profileState.usr);
       return;
     }
 
-    // 2. Fallback to AuthBloc for first-time login flow
     final authState = context.read<AuthBloc>().state;
     if (authState is OtpValidationSuccess) {
       _initializeUser(authState.userMOdel);
@@ -131,8 +128,6 @@ class _ProfileState extends State<Profile> {
             if (state is ProfileUpdateServerFailureState) {
               return _errorView(context, state.msg);
             }
-
-            // ProfileInitial and ProfileUpdateSuccessState both show the form
             return _bodyView(context);
           },
         ),
@@ -140,7 +135,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  /// Displays an error message with a retry button.
+
   Widget _errorView(BuildContext context, String message) {
     return Center(
       child: Padding(

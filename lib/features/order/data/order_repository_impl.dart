@@ -12,9 +12,7 @@ class OrderRepositoryImpl extends OrderRepository {
 
   OrderRepositoryImpl({required this.dataSource});
   @override
-  Future<Either<Failure, OrdersModel>> createOrder(
-    CreateOrderEntity entity,
-  ) async {
+  Future<Either<Failure, bool>> createOrder(CreateOrderEntity entity) async {
     try {
       final result = await dataSource.createOrder(entity);
       return right(result);

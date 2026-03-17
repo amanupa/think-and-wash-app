@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:think_and_wash/features/order/presentation/bloc/orders_bloc.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/bloc/pick_up_slot_bloc.dart';
 
 import '../../../core/app_colors.dart';
@@ -18,6 +19,7 @@ class Cart extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PickUpSlotBloc>(create: (_) => PickUpSlotBloc(di.sl())),
+        BlocProvider<OrderBloc>(create: (_) => di.sl<OrderBloc>()),
       ],
       child:
           istab

@@ -5,5 +5,5 @@ import 'package:think_and_wash/features/order/domain/entity/create_order_entity.
 
 abstract class OrderRepository {
   Future<Either<Failure, OrdersModel>> getOrders();
-  Future<Either<Failure, OrdersModel>> createOrder(CreateOrderEntity entity);
+  Future<Either<Failure, bool>> createOrder(CreateOrderEntity entity);
 }

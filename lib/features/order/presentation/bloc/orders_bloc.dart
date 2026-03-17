@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/usecase_interfase.dart';
 import 'package:think_and_wash/features/order/domain/usecase/create_order_usecase.dart';
@@ -44,5 +45,30 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   FutureOr<void> _onCreateOrder(
     CreateOrderEvent event,
     Emitter<OrderState> emit,
-  ) {}
+  ) async {
+    try {
+      emit(OrderLoadingState());
+      final result = await createOrderUsecase(event.entity);
+      result.fold(
+        (failure) {
+          debugPrint("inside failure state");
+          emit(
+            CreateOrderFailureState(
+              msg: failure.message ?? "Failed to create order",
+            ),
+          );
+        },
+        (success) {
+          debugPrint("inside success state");
+          emit(CreateOrderSuccessState());
+        },
+      );
+    } catch (err) {
+      emit(
+        OrderServerFailureState(
+          msg: "Its not you its us, Sorry for the inconvenience",
+        ),
+      );
+    }
+  }
 }

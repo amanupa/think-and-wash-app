@@ -22,12 +22,10 @@ class OrdersModel {
     success: json?["success"] ?? false,
     page: json?["page"] ?? 0,
     total: json?["total"] ?? 0,
-    data:
-        json?["data"] == null
-            ? []
-            : List<Datum>.from(
-              json!["data"].map((x) => Datum.fromJson(x ?? {})),
-            ),
+    data: (json?["data"] as List<dynamic>?)
+            ?.map((x) => Datum.fromJson(x as Map<String, dynamic>?))
+            .toList() ??
+        [],
   );
 
   Map<String, dynamic> toJson() => {
@@ -127,12 +125,10 @@ class Datum {
     venPhone: json?["venPhone"] ?? "",
     paymentType: json?["paymentType"] ?? "",
     transactionId: json?["transactionId"],
-    items:
-        json?["items"] == null
-            ? []
-            : List<Item>.from(
-              json!["items"].map((x) => Item.fromJson(x ?? {})),
-            ),
+    items: (json?["items"] as List<dynamic>?)
+            ?.map((x) => Item.fromJson(x as Map<String, dynamic>?))
+            .toList() ??
+        [],
     status: (json?["status"] ?? "booked").toString().toOrderStatus(),
     cancellationReason: json?["cancellationReason"],
     totalAmount: json?["totalAmount"] ?? 0,

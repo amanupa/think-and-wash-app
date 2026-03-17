@@ -20,8 +20,11 @@ class CreateOrderSuccessState extends OrderState {
 }
 
 class CreateOrderFailureState extends OrderState {
+  final String msg;
+
+  CreateOrderFailureState({required this.msg});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [msg];
 }
 
 class GetOrderSuccessState extends OrderState {
