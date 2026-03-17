@@ -1,30 +1,55 @@
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
 
-class PickupSlot extends Equatable {
-  final String id;
-  final DateTime start;
-  final DateTime end;
-  final int availableCapacity;
-  final bool isAvailable;
+PickupSlotModel pickupSlotModelFromJson(String str) =>
+    PickupSlotModel.fromJson(json.decode(str));
 
-  const PickupSlot({
+String pickupSlotModelToJson(PickupSlotModel data) =>
+    json.encode(data.toJson());
+
+class PickupSlotModel {
+  bool success;
+  List<PickUpSlot> data;
+
+  PickupSlotModel({required this.success, required this.data});
+
+  factory PickupSlotModel.fromJson(Map<String, dynamic> json) =>
+      PickupSlotModel(
+        success: json["success"],
+        data: List<PickUpSlot>.from(
+          json["data"].map((x) => PickUpSlot.fromJson(x)),
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+    "success": success,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+  };
+}
+
+class PickUpSlot {
+  String id;
+  DateTime start;
+  DateTime end;
+  int availableCapacity;
+
+  PickUpSlot({
     required this.id,
     required this.start,
     required this.end,
     required this.availableCapacity,
-    required this.isAvailable,
   });
 
-  factory PickupSlot.fromJson(Map<String, dynamic> json) {
-    return PickupSlot(
-      id: json['id'],
-      start: DateTime.parse(json['start']),
-      end: DateTime.parse(json['end']),
-      availableCapacity: json['availableCapacity'],
-      isAvailable: json['isAvailable'],
-    );
-  }
+  factory PickUpSlot.fromJson(Map<String, dynamic> json) => PickUpSlot(
+    id: json["id"],
+    start: DateTime.parse(json["start"]),
+    end: DateTime.parse(json["end"]),
+    availableCapacity: json["availableCapacity"],
+  );
 
-  @override
-  List<Object?> get props => [id];
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "start": start.toIso8601String(),
+    "end": end.toIso8601String(),
+    "availableCapacity": availableCapacity,
+  };
 }

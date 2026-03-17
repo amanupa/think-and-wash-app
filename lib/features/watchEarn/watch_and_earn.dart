@@ -64,9 +64,10 @@ class _WatchAndEarnState extends State<WatchAndEarn> {
           height: 50,
           width: MediaQuery.of(context).size.width * 0.5,
           decoration: BoxDecoration(
+            border: Border.all(color: AppColors.seedColor),
             color: AppColors.background,
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 10,
                 spreadRadius: -2,

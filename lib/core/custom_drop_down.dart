@@ -21,13 +21,13 @@ class CustomDropdownField extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
-        value: value,
+        value: items.contains(value) ? value : null,
 
         hint: Text(hint, style: Theme.of(context).textTheme.titleSmall),
 
         isExpanded: true,
 
-        iconStyleData: IconStyleData(
+        iconStyleData: const IconStyleData(
           icon: Icon(
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.boxShadowblue,
@@ -40,11 +40,11 @@ class CustomDropdownField extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 3,
                 spreadRadius: -5,
-                offset: const Offset(0, 5),
+                offset: Offset(0, 5),
                 color: AppColors.boxShadowPink,
               ),
             ],
@@ -55,11 +55,11 @@ class CustomDropdownField extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: AppColors.boxShadowPink,
                 blurRadius: 12,
-                offset: const Offset(0, 6),
+                offset: Offset(0, 6),
               ),
             ],
           ),

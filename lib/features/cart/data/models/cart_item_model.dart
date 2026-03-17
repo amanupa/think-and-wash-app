@@ -1,7 +1,7 @@
 class CartItem {
-  final int id;
+  final String id;
   final String name;
-  final double price;
+  final int price;
   final int quantity;
 
   CartItem({
@@ -19,5 +19,5 @@ class CartItem {
     return CartItem(id: id, name: name, price: price, quantity: quantity - 1);
   }
 
-  double get total => price * quantity;
+  int get total => price * quantity;
 }

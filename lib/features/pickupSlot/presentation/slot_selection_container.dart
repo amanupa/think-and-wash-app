@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/core/app_colors.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_entity.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/bloc/pick_up_slot_bloc.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/widgets/date_selector.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/widgets/slot_grid.dart';
@@ -23,7 +24,9 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
     _selectedDate = _formatDate(DateTime.now());
 
     context.read<PickUpSlotBloc>().add(
-      LoadUserSlots(widget.vendorId, _selectedDate),
+      LoadUserSlots(
+        PickupSlotEntity(date: _selectedDate, vId: widget.vendorId),
+      ),
     );
   }
 
@@ -34,7 +37,7 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.boxShadowPink,
             blurRadius: 10,
@@ -82,6 +85,14 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
                   ),
                 );
               }
+              if (state is UserEmptySlotsState) {
+                return Center(
+                  child: Text(
+                    "No booking slots available of selected date",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                );
+              }
 
               return const SizedBox.shrink();
             },
@@ -105,8 +116,10 @@ class _SlotSelectionSectionState extends State<SlotSelectionSection> {
 
     setState(() => _selectedDate = formatted);
 
+    if (!mounted) return;
+
     context.read<PickUpSlotBloc>().add(
-      LoadUserSlots(widget.vendorId, formatted),
+      LoadUserSlots(PickupSlotEntity(date: formatted, vId: widget.vendorId)),
     );
   }
 

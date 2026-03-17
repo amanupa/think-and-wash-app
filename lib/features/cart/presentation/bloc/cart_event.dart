@@ -4,15 +4,15 @@ part of 'cart_bloc.dart';
 sealed class CartEvent {}
 
 class AddItem extends CartEvent {
-  final int id;
+  final String id;
   final String name;
-  final double price;
+  final int price;
 
   AddItem({required this.id, required this.name, required this.price});
 }
 
 class RemoveItem extends CartEvent {
-  final int id;
+  final String id;
 
   RemoveItem(this.id);
 }

@@ -1,23 +1,37 @@
-/*import 'package:think_and_wash_admin/features/order/domain/order_entity.dart';
-import 'package:think_and_wash_admin/features/order/domain/order_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:think_and_wash/core/failure.dart';
+import 'package:think_and_wash/features/order/data/datasource/remote_datasource.dart';
+import 'package:think_and_wash/features/order/data/model/order.dart';
+import 'package:think_and_wash/features/order/domain/entity/create_order_entity.dart';
+import 'package:think_and_wash/features/order/domain/order_repository.dart';
 
+import '../../../core/exception.dart';
 
+class OrderRepositoryImpl extends OrderRepository {
+  final OrderRemoteDataSource dataSource;
 
-class OrderRepositoryImpl implements OrderRepository {
-  final OrderRemoteDataSource remoteDataSource;
-
-  OrderRepositoryImpl(this.remoteDataSource);
-
+  OrderRepositoryImpl({required this.dataSource});
   @override
-  Future<List<OrderEntity>> getOrders() async {
-    return await remoteDataSource.getOrders();
+  Future<Either<Failure, bool>> createOrder(CreateOrderEntity entity) async {
+    try {
+      final result = await dataSource.createOrder(entity);
+      return right(result);
+    } on ApiException catch (err) {
+      return left(ApiFailure(message: err.message));
+    } on ServerException {
+      return left(const ServerFailure());
+    }
   }
 
   @override
-  Future<void> updateOrderStatus({
-    required String orderId,
-    required OrderStatus status,
-  }) async {
-    await remoteDataSource.updateOrderStatus(orderId, status.index + 1);
+  Future<Either<Failure, OrdersModel>> getOrders() async {
+    try {
+      final result = await dataSource.getOrders();
+      return right(result);
+    } on ApiException catch (err) {
+      return left(ApiFailure(message: err.message));
+    } on ServerException {
+      return left(const ServerFailure());
+    }
   }
-}*/
+}

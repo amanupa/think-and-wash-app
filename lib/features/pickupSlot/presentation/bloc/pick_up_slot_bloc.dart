@@ -1,15 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/rendering.dart';
+import 'package:think_and_wash/features/pickupSlot/domain/pickup_slot_usecase.dart';
 
 import '../../data/pickup_slot_model.dart';
-import '../../data/pickup_slot_repository_impl.dart';
+
+import '../../domain/pickup_slot_entity.dart';
 
 part 'pick_up_slot_event.dart';
 part 'pick_up_slot_state.dart';
 
 class PickUpSlotBloc extends Bloc<PickUpSlotEvent, PickUpSlotState> {
-  final UserSlotRepository repository;
-  PickUpSlotBloc(this.repository) : super(PickUpSlotInitial()) {
+  final PickupSlotUsecase usecase;
+  PickUpSlotBloc(this.usecase) : super(PickUpSlotInitial()) {
     on<LoadUserSlots>(_onLoadSlots);
     on<SelectSlot>(_onSelectSlot);
   }
@@ -20,13 +23,22 @@ class PickUpSlotBloc extends Bloc<PickUpSlotEvent, PickUpSlotState> {
     emit(UserSlotLoading());
 
     try {
-      final slots = await repository.fetchSlots(event.vendorId, event.date);
-
-      if (slots.isEmpty) {
-        emit(UserSlotLoaded(_generateStaticSlots()));
-      } else {
-        emit(UserSlotLoaded(slots));
-      }
+      debugPrint(
+        "this is hte entity in onloadSlots: ${event.entity.date} ${event.entity.vId}",
+      );
+      final result = await usecase(event.entity);
+      result.fold(
+        (failure) {
+          emit(UserSlotError(failure.message ?? "Something bad"));
+        },
+        (success) {
+          if (success.data.isEmpty) {
+            emit(UserEmptySlotsState());
+          } else {
+            emit(UserSlotLoaded(success.data));
+          }
+        },
+      );
     } catch (e) {
       emit(UserSlotLoaded(_generateStaticSlots()));
     }
@@ -40,23 +52,22 @@ class PickUpSlotBloc extends Bloc<PickUpSlotEvent, PickUpSlotState> {
     }
   }
 
-  List<PickupSlot> _generateStaticSlots() {
+  List<PickUpSlot> _generateStaticSlots() {
     final now = DateTime.now();
     final date = DateTime(now.year, now.month, now.day);
 
-    List<PickupSlot> slots = [];
+    List<PickUpSlot> slots = [];
 
     for (int hour = 9; hour < 23; hour++) {
       final start = date.add(Duration(hours: hour));
       final end = date.add(Duration(hours: hour + 1));
 
       slots.add(
-        PickupSlot(
+        PickUpSlot(
           id: "static_$hour",
           start: start,
           end: end,
           availableCapacity: 10,
-          isAvailable: true,
         ),
       );
     }

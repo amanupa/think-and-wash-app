@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:think_and_wash/features/cart/presentation/bloc/cart_bloc.dart';
 
 import '../../../../core/app_colors.dart';
-import '../../data/models/category_item_model.dart';
+import '../../data/model/category_model.dart';
 
 class SliverCartItemList extends StatelessWidget {
-  final List<ProductItem> items;
+  final List<Item> items;
   final bool iscartbutton;
 
   const SliverCartItemList({
@@ -33,7 +33,7 @@ class SliverCartItemList extends StatelessWidget {
             children: [
               /// Image
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.background,
                   boxShadow: [
                     BoxShadow(
@@ -46,28 +46,30 @@ class SliverCartItemList extends StatelessWidget {
                 ),
                 height: 50,
                 width: 50,
-                child: Image.asset(item.image),
+                child: Image.network(
+                  item.image,
+                  cacheHeight: 150,
+                  errorBuilder:
+                      (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, color: Colors.grey),
+                ),
               ),
 
-              /// Name
               Text(item.name, style: Theme.of(context).textTheme.titleMedium),
 
-              /// Cart Controls
-              BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) {
-                  int count = 0;
-
+              BlocSelector<CartBloc, CartState, int>(
+                selector: (state) {
                   if (state is CartLoaded) {
                     final existing =
                         state.items.where((e) => e.id == item.id).toList();
-
                     if (existing.isNotEmpty) {
-                      count = existing.first.quantity;
+                      return existing.first.quantity;
                     }
                   }
-
+                  return 0;
+                },
+                builder: (context, count) {
                   return SizedBox(
-                    //width: 187,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -75,7 +77,7 @@ class SliverCartItemList extends StatelessWidget {
                           onPressed: () {
                             context.read<CartBloc>().add(RemoveItem(item.id));
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.delete,
                             color: AppColors.boxShadowPink,
                           ),

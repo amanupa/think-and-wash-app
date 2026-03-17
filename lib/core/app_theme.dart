@@ -11,6 +11,10 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: AppColors.background,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.background,
+        scrolledUnderElevation: 0.0,
+      ),
       textTheme: TextTheme(
         titleLarge: GoogleFonts.dmSans(
           color: AppColors.primaryText,

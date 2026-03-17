@@ -28,12 +28,12 @@ class _PriceSummaryCardState extends State<PriceSummaryCard> {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: AppColors.boxShadowPink,
             blurRadius: 10,
             spreadRadius: -4,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),

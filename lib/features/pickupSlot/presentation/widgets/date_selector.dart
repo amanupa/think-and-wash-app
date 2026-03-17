@@ -22,7 +22,7 @@ class DateSelector extends StatelessWidget {
           color: AppColors.background,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: AppColors.boxShadowPink),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: AppColors.boxShadowPink,
               blurRadius: 5,

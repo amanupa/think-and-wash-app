@@ -12,8 +12,8 @@ final class PickUpSlotInitial extends PickUpSlotState {}
 class UserSlotLoading extends PickUpSlotState {}
 
 class UserSlotLoaded extends PickUpSlotState {
-  final List<PickupSlot> slots;
-  final PickupSlot? selectedSlot;
+  final List<PickUpSlot> slots;
+  final PickUpSlot? selectedSlot;
 
   const UserSlotLoaded(this.slots, {this.selectedSlot});
   @override
@@ -25,4 +25,9 @@ class UserSlotError extends PickUpSlotState {
   const UserSlotError(this.message);
   @override
   List<Object> get props => [message];
+}
+
+class UserEmptySlotsState extends PickUpSlotState {
+  @override
+  List<Object?> get props => [];
 }

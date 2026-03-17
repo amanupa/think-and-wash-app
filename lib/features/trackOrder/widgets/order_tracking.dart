@@ -100,16 +100,16 @@ class OrderTracking extends StatelessWidget {
   Widget _circle(bool done, bool active, int index) {
     if (done) {
       return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 206, 247, 208),
+              color: Color.fromARGB(255, 206, 247, 208),
               blurRadius: 12,
             ),
           ],
         ),
-        child: CircleAvatar(
+        child: const CircleAvatar(
           radius: 16,
           backgroundColor: Colors.greenAccent,
           child: Center(child: Icon(Icons.check, color: Colors.white)),
@@ -126,7 +126,7 @@ class OrderTracking extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           boxShadow: [
-            BoxShadow(color: Colors.orange.withOpacity(.6), blurRadius: 12),
+            BoxShadow(color: Colors.orange.withValues(alpha: .6), blurRadius: 12),
           ],
         ),
         child: CircleAvatar(
@@ -152,7 +152,7 @@ class OrderTracking extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           done
-              ? BoxShadow(
+              ? const BoxShadow(
                 blurRadius: 10,
                 spreadRadius: -5,
                 offset: Offset(4, 5),
@@ -162,11 +162,11 @@ class OrderTracking extends StatelessWidget {
               ? BoxShadow(
                 blurRadius: 12,
                 spreadRadius: -4,
-                offset: Offset(3, 3),
-                color: Colors.orange.withOpacity(.6),
+                offset: const Offset(3, 3),
+                color: Colors.orange.withValues(alpha: .6),
                 //blurRadius: 12,
               )
-              : BoxShadow(
+              : const BoxShadow(
                 blurRadius: 8,
                 spreadRadius: -4,
                 offset: Offset(3, 3),

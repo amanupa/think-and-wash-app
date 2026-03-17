@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:think_and_wash/features/order/presentation/bloc/orders_bloc.dart';
 import 'package:think_and_wash/features/pickupSlot/presentation/bloc/pick_up_slot_bloc.dart';
 
 import '../../../core/app_colors.dart';
-import '../../pickupSlot/data/pickup_slot_repository_impl.dart';
 import 'widgets/cart_body.dart';
+import 'package:think_and_wash/core/injection.dart' as di;
 
 class Cart extends StatelessWidget {
   final bool istab;
@@ -17,13 +18,12 @@ class Cart extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PickUpSlotBloc>(
-          create: (_) => PickUpSlotBloc(UserSlotRepository()),
-        ),
+        BlocProvider<PickUpSlotBloc>(create: (_) => PickUpSlotBloc(di.sl())),
+        BlocProvider<OrderBloc>(create: (_) => di.sl<OrderBloc>()),
       ],
       child:
           istab
-              ? CartBody()
+              ? const CartBody()
               : Scaffold(
                 appBar: AppBar(
                   backgroundColor: AppColors.background,
@@ -33,7 +33,7 @@ class Cart extends StatelessWidget {
                   ),
                   centerTitle: true,
                 ),
-                body: CartBody(),
+                body: const CartBody(),
               ),
     );
   }

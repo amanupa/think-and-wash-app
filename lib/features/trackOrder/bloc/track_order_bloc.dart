@@ -5,7 +5,7 @@ part 'track_order_event.dart';
 part 'track_order_state.dart';
 
 class TrackOrderBloc extends Bloc<TrackOrderEvent, TrackOrderState> {
-  TrackOrderBloc() : super(TrackOrderState(OrderStatus.confirmed)) {
+  TrackOrderBloc() : super(const TrackOrderState(OrderStatus.confirmed)) {
     on<UpdateOrderStatus>((event, emit) {
       emit(TrackOrderState(event.status));
     });
